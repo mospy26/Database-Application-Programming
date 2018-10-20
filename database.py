@@ -4,10 +4,12 @@ import sys
 
 # connect to the database
 def database_connect():
+    # parse the config file
     config = configparser.ConfigParser()
     config.read("config.ini")
 
     connection = None
+    #connect to database
     try:
         connection = pg8000.connect(database=config['DATABASE']['username'],
                                     user=config['DATABASE']['username'],
