@@ -7,5 +7,6 @@ To use it, do the following steps via terminal:
 2) cd ISYS2120-Assignment3
 3) source ./assignment/bin/activate
 4) python3 database.py (OR) python3 -i database.py
+5) (To run the webserver) python3 web_app.py
 
 Cheers! :)
