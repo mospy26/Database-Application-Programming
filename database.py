@@ -2,6 +2,8 @@ import pg8000
 import configparser
 import sys
 
+login_details = {}
+
 # connect to the database
 def database_connect():
     # parse the config file
@@ -29,7 +31,3 @@ def database_connect():
         exit(-1)
 
     return connection
-
-# initial testing
-conn = database_connect()
-cur = conn.cursor()
