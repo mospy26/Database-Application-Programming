@@ -95,7 +95,7 @@ def check_login(employee_id, password):
 
     try:
         sql = """SELECT empid, name, homeAddress, dateOfBirth FROM Employee
-        WHERE empID = %d and password = %S"""
+        WHERE empID = %s and password = %s"""
         cur.execute(sql, (employee_id, password))
         r = cur.fetchone()
         cur.close()
@@ -141,22 +141,22 @@ def is_manager(employee_id):
 
     # TODO Dummy Data - Change to be useful!
     # Return a list of departments
-	conn = database_connect()
-	if conn is None:
-		return None
+    conn = database_connect()
+    if conn is None:
+        return None
 
-	cur = conn.cursor()
+    cur = conn.cursor()
 
-	try:
+    try:
         sql = """SELECT name FROM Department
-        WHERE manager = %s"""
-        cur.execute(sql, (employee_id))
-        r = cur.fetchone()
+        WHERE manager = %s;"""
+        cur.execute(sql, (employee_id,))
+        r = cur.fetchall()
         cur.close()
         conn.close()
         return r
-    except:
-        print("Error Invalid Login")
+    except Exception as e:
+        print(e)
     cur.close()
     conn.close()
     return False
@@ -186,23 +186,23 @@ def get_devices_used_by(employee_id):
     # Each "Row" contains [ deviceID, manufacturer, modelNumber]
     # If no devices = empty list []
 
-	conn = database_connect
-	if conn is None:
-		return None
+    conn = database_connect()
+    if conn is None:
+        return None
 
-	cur = conn.cursor()
-
-	try:
-        sql = """SELECT deviceID, manufacturer, modelNumber FROM Device D
+    cur = conn.cursor()
+    try:
+        sql = """SELECT D.deviceID, D.manufacturer, D.modelNumber FROM Device D
 				INNER JOIN DeviceUsedBy Du ON (D.deviceID = Du.deviceID)
-        WHERE empID = %s"""
-        cur.execute(sql, (employee_id))
-        r = cur.fetchone()
+                WHERE empID = %s"""
+        cur.execute(sql, (employee_id,))
+        r = cur.fetchall()
         cur.close()
         conn.close()
         return r
-    except:
+    except Exception as e:
         print("Some error occurred.")
+        print(e)
     cur.close()
     conn.close()
     return []
@@ -233,6 +233,26 @@ def employee_works_in(employee_id):
 
     # TODO Dummy Data - Change to be useful!
     # Return a list of departments
+
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.cursor()
+    try:
+        sql = """SELECT * FROM EmployeeDepartments
+	              WHERE empID = %s"""
+        cur.execute(sql, (employee_id,))
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        return r
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return []
 
     departments = ['IT', 'Marketing']
 
