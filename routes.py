@@ -488,4 +488,4 @@ def addEmployee():
 
 @app.route("/search")
 def search():
-    return redirect(url_for('search.html')
+    return redirect(url_for('search.html'))

@@ -5,4 +5,3 @@ modules/werkzeug/debug/__pycache__/*
 modules/__pycache__/*
 modules/flask/__pycache__/*
 modules/pg8000/__pycache__/*
-modules/*
