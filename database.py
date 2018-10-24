@@ -725,6 +725,44 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
     # Return each device of this model and whether the employee has it
     # issued.
     # Each "row" has: [ device_id, True if issued, else False.]
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.coursor()
+
+    try:
+        sql = """SELECT
+	                   deviceID,
+	                   CASE
+                            WHEN issuedTo = %s THEN 'Yes'
+                            ELSE 'No'
+                            END as issuedTo
+                    FROM (Device
+		                  Inner join Employee on(empid = issuedto))
+                    WHERE
+		                  manufacturer = %s
+		                  and
+		                  modelNumber = %s;"""
+
+        cur.execute(sql, (model_number, manufacturer, emplyee_id))
+        r = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        tuples = {
+            'device_assigned': device_assigned,
+            }
+
+        return tuples
+
+    except Exception as e:
+        print("Some error occured.")
+        print(e)
+    cur.close()
+    conn.close()
+    return[]
+
 
     device_assigned = [
         [123656, False],
