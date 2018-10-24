@@ -129,6 +129,7 @@ def is_manager(employee_id):
 
     # TODO Dummy Data - Change to be useful!
     # Return a list of departments
+
     conn = database_connect()
     if conn is None:
         return None
@@ -143,7 +144,8 @@ def is_manager(employee_id):
         cur.close()
         conn.close()
         manager_of = r
-
+        if len(manager_of) == 0:
+            return None
         tuples = {
             'departments': manager_of
         }
@@ -153,7 +155,7 @@ def is_manager(employee_id):
         print(e)
     cur.close()
     conn.close()
-    return False
+    return None
 
     #manager_of = ['RND', 'Accounting']
 
@@ -529,7 +531,7 @@ def get_device_information(device_id):
         sql = """ SELECT deviceID, serialnumber, purchasedate, purchasecost, manufacturer, modelnumber,
         description, weight FROM Device NATURAL JOIN Model WHERE  deviceID = %s"""
         cur.execute(sql, (device_id,))
-        r = cur.fetchone()
+        r = cur.fetchall()
         cur.close()
         conn.close()
         device_info = r
@@ -596,11 +598,11 @@ def get_department_models(department_name):
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT manufacturer, modelnumber, maxnumber
+        sql = """SELECT manufacturer, modelnumber, maxnumber
                 FROM Department D JOIN ModelAllocations MA ON (D.name = MA.department) JOIN Model M ON (M.modelNumber = MA.modelNumber AND M.manufacturer = MA.manufacturer)
-                WHERE manager = %s"""
-        cur.execute(sql, (device_id,))
-        r = cur.fetchone()
+                WHERE name = %s"""
+        cur.execute(sql, (department_name,))
+        r = cur.fetchall()
         cur.close()
         conn.close()
         device_info = r
@@ -650,6 +652,37 @@ def get_employee_department_model_device(department_name, manufacturer, model_nu
         - [ 1337, Misty, 20 ]
         - [ 351, Pikachu, 10 ]
     """
+
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.cursor()
+    try:
+        sql = """ SELECT empID, count(deviceID)
+            FROM Employee JOIN Device ON (empID = issuedTo) NATURAL JOIN EmployeeDepartments
+            WHERE department = %s
+            AND modelNumber = %s
+            AND manufacturer = %s
+            GROUP BY empID"""
+        cur.execute(sql, (department_name, model_number, manufacturer))
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        employee_counts = r
+
+        tuples = {
+            'employee_counts': employee_counts
+        }
+
+        return tuples
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return None
+
 
     # TODO Dummy Data - Change to be useful!
     # Return the number of devices owned by each employee matching department,

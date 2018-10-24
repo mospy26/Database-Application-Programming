@@ -159,8 +159,6 @@ def mydevices():
     # Check if the user is logged in, if not: back to login.
     if('logged_in' not in session or not session['logged_in']):
         return redirect(url_for('login'))
-    print("TYPE OF THE USER DETAILS IS: " + str(type(user_details)))
-    print(user_details)
     device_list = database.get_issued_devices_for_user(user_details['empid'])
 
     if device_list is None:
@@ -289,6 +287,7 @@ def departmentmodels():
                                 page=page)
     else:
         # Show all models from the department
+        print("A"*10000+ str(session))
         department_models = database.get_department_models(session['manager']['departments'][0])
 
         return render_template('departmentmodels.html',
@@ -332,6 +331,9 @@ def issue_device():
     elif(request.method == 'GET'):
         # Else they're looking at the page.
         # 1. Get the list of models (Other parts will be async through ajax)
+        #if len(session['manager']['departments']) == 0:
+        #    flash("You are not a manager!")
+        #    return redirect(url_for('index'))
         models = database.get_department_models(session['manager']['departments'][0])
 
         if models is None:
