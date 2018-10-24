@@ -287,9 +287,7 @@ def departmentmodels():
                                 page=page)
     else:
         # Show all models from the department
-        print("A"*10000+ str(session))
         department_models = database.get_department_models(session['manager']['departments'][0])
-
         return render_template('departmentmodels.html',
                                department_models=department_models['model_allocations'],
                                department=session['manager']['departments'][0],

@@ -140,7 +140,7 @@ def is_manager(employee_id):
         sql = """SELECT name FROM Department
         WHERE manager = %s;"""
         cur.execute(sql, (employee_id,))
-        r = cur.fetchall()
+        r = cur.fetchone()
         cur.close()
         conn.close()
         manager_of = r
@@ -595,19 +595,17 @@ def get_department_models(department_name):
     conn = database_connect()
     if conn is None:
         return None
-
+    print("Z"*1000 + department_name)
     cur = conn.cursor()
     try:
-        sql = """SELECT manufacturer, modelnumber, maxnumber
+        sql = """SELECT M.manufacturer, M.modelnumber, maxnumber
                 FROM Department D JOIN ModelAllocations MA ON (D.name = MA.department) JOIN Model M ON (M.modelNumber = MA.modelNumber AND M.manufacturer = MA.manufacturer)
                 WHERE name = %s"""
         cur.execute(sql, (department_name,))
         r = cur.fetchall()
         cur.close()
         conn.close()
-        device_info = r
         model_allocations = r
-
         tuples = {
             'model_allocations': model_allocations
         }
@@ -745,7 +743,7 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
 		                  and
 		                  modelNumber = %s;"""
 
-        cur.execute(sql, (model_number, manufacturer, emplyee_id))
+        cur.execute(sql, (employee_id, manufacturer, model_number))
         r = cur.fetchone()
         cur.close()
         conn.close()
