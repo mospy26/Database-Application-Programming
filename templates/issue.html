@@ -25,7 +25,8 @@
                 <label for="model_number">Model Number</label>
                 <select name="model_number" placeholder="Model Number" id='model_number'  required>
                     {% for model in models['model_allocations'] %}
-                        <option value="{{model[0]}}">{{model[1]}}</option>
+                     <!-- changed this part -->
+                      <option value="{{model[1]}}">{{model[1]}}</option>
                     {% endfor %}
                 </select>
             </div>
