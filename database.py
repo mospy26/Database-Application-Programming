@@ -685,20 +685,52 @@ def get_device_model(device_id):
 
     # TODO Dummy Data - Change to be useful!
 
-    model_info = [
-        'Zoomzone',              # manufacturer
-        '9854941272',            # modelNumber
-        'brick--I mean laptop',  # description
-        2000,                    # weight
-    ]
+    # ------------------------------------------ Feedback please. Not sure ------------------------------------------
+     conn = database_connect()
+     if(conn is None):
+         return None
+     cur = conn.cursor()
+     try:
+         sql = """SELECT M.manufacturer, M.modelnumber, M.description, M.weight
+                       FROM (Device D
+                             INNER JOIN Model M on(D.modelnumber = M.modelnumber))
+                       WHERE D.deviceid = %s;"""
 
-    model = {
-        'manufacturer': model_info[0],
-        'model_number': model_info[1],
-        'description': model_info[2],
-        'weight': model_info[3],
-    }
-    return model
+         cur.execute(sql, device_id)
+         r = cur.fetchall()
+         cur.close()
+         conn.close()
+         model_info = r
+
+         model = {
+             'manufacturer': model_info[0],
+             'model_number': model_info[1],
+             'description': model_info[2],
+             'weight': model_info[3],
+             }
+         return model
+
+     except Exception as e:
+         print("Some error occured.")
+         print(e)
+     cur.close()
+     conn.close()
+     return None
+
+     # model_info = [
+     #     'Zoomzone',              # manufacturer
+     #     '9854941272',            # modelNumber
+     #     'brick--I mean laptop',  # description
+     #     2000,                    # weight
+     # ]
+     #
+     # model = {
+     #     'manufacturer': model_info[0],
+     #     'model_number': model_info[1],
+     #     'description': model_info[2],
+     #     'weight': model_info[3],
+     # }
+     # return model
 
 
 #####################################################
@@ -888,6 +920,8 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
     # Return each device of this model and whether the employee has it
     # issued.
     # Each "row" has: [ device_id, True if issued, else False.]
+
+    # ------------------------------------------ Feedback please. Not sure ------------------------------------------
     conn = database_connect()
     if conn is None:
         return None
