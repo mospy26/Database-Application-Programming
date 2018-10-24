@@ -25,13 +25,13 @@
                 </td>
             </tr>
         </table>
-
-        {% if session['manager'] != None or len(session['manager']) != 0 %}
+        <!-- I changed this part according to the ed post -->
+         {% if manager_of is not none or manager_of['departments']|length != 0 %}
 
         <hr>
 
         <h3>Manager of:
-        {% for row in session['manager']['departments'] %}
+        {% for row in manager_of['departments'] %}
             {{row}},&nbsp
         {% endfor %}
         {% endif %}
