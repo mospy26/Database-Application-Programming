@@ -44,7 +44,26 @@ a:hover {
 .clear {
     clear: both;
 }
+.wrapper{
+border:1px solid #000;
+  display:inline-block;
+}
 
+input,
+button {
+  background-color:transparent;
+  border:0;
+}
+
+button {
+  position:absolute;
+  right:0;
+  top:0;
+}
+
+input {
+  padding-right:30px; /* button padding */
+}
 h1.title {
   font-size: 40px;
   font-weight: 300;
