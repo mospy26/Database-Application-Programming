@@ -1,2 +1,8 @@
 .profile
-modules/jinja2/__pycache__/
+modules/jinja2/__pycache__/*
+__pycache__/*
+modules/werkzeug/debug/__pycache__/*
+modules/__pycache__/*
+modules/flask/__pycache__/*
+modules/pg8000/__pycache__/*
+modules/*
