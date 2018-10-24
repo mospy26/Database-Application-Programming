@@ -100,32 +100,20 @@ def check_login(employee_id, password):
         r = cur.fetchone()
         cur.close()
         conn.close()
-        return r
+        employee_info = r
+        tuples = {
+            'empid': employee_info[0],
+            'name': employee_info[1],
+            'homeAddress': employee_info[2],
+            'dateOfBirth': employee_info[3],
+        }
+
+        return tuples
     except:
         print("Error Invalid Login")
     cur.close()
     conn.close()
     return None
-
-    # TODO Dummy data - change rows to be useful!
-    # NOTE: Make sure you take care of ORDER!!!
-
-    employee_info = [
-        1337,                       # empid
-        'Porter Tato Head',         # name
-        '123 Fake Street',          # homeAddress
-        '1970-01-01'                # dateOfBirth
-    ]
-
-    tuples = {
-        'empid': employee_info[0],
-        'name': employee_info[1],
-        'homeAddress': employee_info[2],
-        'dateOfBirth': employee_info[3],
-    }
-
-    return tuples
-
 
 #####################################################
 #   Query (f[i])
@@ -154,7 +142,13 @@ def is_manager(employee_id):
         r = cur.fetchall()
         cur.close()
         conn.close()
-        return r
+        manager_of = r
+
+        tuples = {
+            'departments': manager_of
+        }
+
+        return tuples
     except Exception as e:
         print(e)
     cur.close()
@@ -246,21 +240,19 @@ def employee_works_in(employee_id):
         r = cur.fetchall()
         cur.close()
         conn.close()
-        return r
+        departments = r
+
+        tuples = {
+            'departments': departments,
+        }
+
+        return tuples
     except Exception as e:
         print("Some error occurred.")
         print(e)
     cur.close()
     conn.close()
     return []
-
-    departments = ['IT', 'Marketing']
-
-    tuples = {
-        'departments': departments,
-    }
-
-    return tuples
 
 
 #####################################################
@@ -279,23 +271,45 @@ def get_issued_devices_for_user(employee_id):
     # Each "Row" contains [ deviceID, purchaseDate, modelNumber, manufacturer ]
     # If no devices = empty list []
 
-    devices = [
-        [7, '2017-08-28', 'Zava', '1146805551'],
-        [8, '2017-09-22', 'Topicware', '5798231046'],
-        [6123, '2017-09-05', 'Dabshots', '6481799600'],
-        [1373, '2018-04-19', 'Cogibox', '6700815444'],
-        [8, '2018-02-10', 'Feednation', '2050267274'],
-        [36, '2017-11-05', 'Muxo', '8768929463'],
-        [17, '2018-01-14', 'Izio', '5886976558'],
-        [13, '2017-09-08', 'Skyndu', '5296853075'],
-        [24, '2017-10-22', 'Yakitri', '8406089423'],
-    ]
+    conn = database_connect()
+    if conn is None:
+        return None
 
-    tuples = {
-        'device_list': devices
-    }
+    cur = conn.cursor()
+    try:
+        sql = """SELECT deviceID, purchaseDate, modelNumber, manufacturer FROM Device
+    	WHERE issuedTo = %s"""
+        cur.execute(sql, (employee_id,))
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        return r
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return []
 
-    return tuples
+
+
+    # devices = [
+    #     [7, '2017-08-28', 'Zava', '1146805551'],
+    #     [8, '2017-09-22', 'Topicware', '5798231046'],
+    #     [6123, '2017-09-05', 'Dabshots', '6481799600'],
+    #     [1373, '2018-04-19', 'Cogibox', '6700815444'],
+    #     [8, '2018-02-10', 'Feednation', '2050267274'],
+    #     [36, '2017-11-05', 'Muxo', '8768929463'],
+    #     [17, '2018-01-14', 'Izio', '5886976558'],
+    #     [13, '2017-09-08', 'Skyndu', '5296853075'],
+    #     [24, '2017-10-22', 'Yakitri', '8406089423'],
+    # ]
+    #
+    # tuples = {
+    #     'device_list': devices
+    # }
+    #
+    # return tuples
 
 
 #####################################################
@@ -312,21 +326,46 @@ def get_all_devices():
     # Each "Row" contains [ deviceID, purchaseDate, modelNumber, manufacturer ]
     # If no devices = empty list []
 
-    devices = [
-        [7, '2017-08-28', 'Zava', '1146805551'],
-        [8, '2017-09-22', 'Topicware', '5798231046'],
-        [6123, '2017-09-05', 'Dabshots', '6481799600'],
-        [1373, '2018-04-19', 'Cogibox', '6700815444'],
-        [8, '2018-02-10', 'Feednation', '2050267274'],
-        [36, '2017-11-05', 'Muxo', '8768929463'],
-        [17, '2018-01-14', 'Izio', '5886976558'],
-        [13, '2017-09-08', 'Skyndu', '5296853075'],
-        [24, '2017-10-22', 'Yakitri', '8406089423'],
-    ]
+    conn = database_connect()
+    if conn is None:
+        return None
 
-    tuples = {
-        'device_list': devices
-    }
+    cur = conn.cursor()
+    try:
+        sql = """SELECT * FROM Device"""
+        cur.execute(sql)
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        device_list = r
+        tuples = {
+            'device_list': device_list
+        }
+
+        return tuples
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return []
+
+
+    # devices = [
+    #     [7, '2017-08-28', 'Zava', '1146805551'],
+    #     [8, '2017-09-22', 'Topicware', '5798231046'],
+    #     [6123, '2017-09-05', 'Dabshots', '6481799600'],
+    #     [1373, '2018-04-19', 'Cogibox', '6700815444'],
+    #     [8, '2018-02-10', 'Feednation', '2050267274'],
+    #     [36, '2017-11-05', 'Muxo', '8768929463'],
+    #     [17, '2018-01-14', 'Izio', '5886976558'],
+    #     [13, '2017-09-08', 'Skyndu', '5296853075'],
+    #     [24, '2017-10-22', 'Yakitri', '8406089423'],
+    # ]
+    #
+    # tuples = {
+    #     'device_list': devices
+    # }
 
     return tuples
 
@@ -345,6 +384,31 @@ def get_all_models():
     # Return the list of models with information from the model table.
     # Each "Row" contains: [manufacturer, description, modelnumber, weight]
     # If No Models = EMPTY LIST []
+
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.cursor()
+    try:
+        sql = """SELECT * FROM Model"""
+        cur.execute(sql)
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        models = r
+        tuples = {
+            'models': models
+        }
+
+        return tuples
+
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return []
 
     models = [
         ['Feednation', 'Expanded didactic instruction set', '2050267274', 31],
@@ -399,6 +463,26 @@ def get_device_repairs(device_id):
     #       - cost
     #       - servicename (of who did the repair)
     # If no repairs = empty list
+
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.cursor()
+    try:
+        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair
+	              WHERE  doneTo = %s"""
+        cur.execute(sql, (device_id,))
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        return r
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return []
 
     repairs = [
         [17, 'Never, The', '2018-07-16', '2018-09-22', '$837.13', 'TopDrive'],

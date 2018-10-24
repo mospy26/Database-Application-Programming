@@ -128,6 +128,7 @@ def logout():
 
 @app.route('/models')
 def models():
+    global user_details
     """
     Shows a list of all models.
     """
@@ -151,13 +152,15 @@ def models():
 
 @app.route('/mydevices')
 def mydevices():
+    global user_details
     """
     Shows a list of devices issued to me.
     """
     # Check if the user is logged in, if not: back to login.
     if('logged_in' not in session or not session['logged_in']):
         return redirect(url_for('login'))
-
+    print("TYPE OF THE USER DETAILS IS: " + str(type(user_details)))
+    print(user_details)
     device_list = database.get_issued_devices_for_user(user_details['empid'])
 
     if device_list is None:
@@ -177,6 +180,7 @@ def mydevices():
 
 @app.route('/device/<deviceid>')
 def device(deviceid):
+    global user_details
     """
     Show the device details
         - Repairs.
@@ -218,6 +222,7 @@ def device(deviceid):
 
 @app.route('/departmentmodels')
 def departmentmodels():
+    global user_details
     """
     Shows the list of models assigned to the department.
 
@@ -471,4 +476,3 @@ def revoke_device():
                                 manufacturer=manufacturer,
                                 empid=employee_id,
                                 department=department))
-
