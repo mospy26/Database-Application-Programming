@@ -476,3 +476,11 @@ def revoke_device():
                                 manufacturer=manufacturer,
                                 empid=employee_id,
                                 department=department))
+
+@app.route("/addMustafa")
+def addMustafa():
+    return "Hello World"
+
+@app.route("/addEmployee")
+def addEmployee():
+    return "Hello World"
