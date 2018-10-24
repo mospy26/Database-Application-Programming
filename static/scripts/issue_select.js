@@ -24,13 +24,15 @@ $(document).ready(function() {
         // this value
         let manufacturer = $(this).val()
         let modelNumber = $('#model_number').val()
-        getEmployees(manufacturer, modelNumber);
+        <!-- changed this -->
+        getEmployees(modelNumber, manufacturer);
     });
 
     $('#model_number').on('change', function(e){
         let manufacturer = $('#manufacturer').val()
         let modelNumber =  $(this).val()
-        getEmployees(manufacturer, modelNumber);
+        <!-- changed this -->
+        getEmployees(modelNumber, manufacturer);
     });
 
 
