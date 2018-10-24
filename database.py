@@ -200,7 +200,7 @@ def get_devices_used_by(employee_id):
         }
 
         return tuples
-        
+
     except Exception as e:
         print("Some error occurred.")
         print(e)
@@ -209,7 +209,7 @@ def get_devices_used_by(employee_id):
     return []
 
 
-    
+
 
 
 #####################################################
@@ -274,7 +274,7 @@ def get_issued_devices_for_user(employee_id):
 
     cur = conn.cursor()
     try:
-        sql = """SELECT deviceID, purchaseDate, modelNumber, manufacturer FROM Device
+        sql = """SELECT deviceID, purchaseDate, manufacturer, modelNumber FROM Device
     	WHERE issuedTo = %s"""
         cur.execute(sql, (employee_id,))
         r = cur.fetchall()
@@ -391,7 +391,7 @@ def get_all_models():
 
     cur = conn.cursor()
     try:
-        sql = """SELECT * FROM Model"""
+        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model"""
         cur.execute(sql)
         r = cur.fetchall()
         cur.close()
@@ -463,15 +463,15 @@ def get_device_repairs(device_id):
     #       - cost
     #       - servicename (of who did the repair)
     # If no repairs = empty list
-    
+
     conn = database_connect()
     if conn is None:
         return None
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair NATURAL JOIN Service
-	              WHERE  doneTo = %s"""
+        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair
+                WHERE doneTo = %s"""
         cur.execute(sql, (device_id,))
         r = cur.fetchall()
         cur.close()
@@ -519,14 +519,14 @@ def get_device_information(device_id):
 
     # TODO Dummy Data - Change to be useful!
     # Return all the relevant device information for the device
-       
+
     conn = database_connect()
     if conn is None:
         return None
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT deviceID, serialnumber, purchasedate, purchasecost, manufacturer, modelnumber, 
+        sql = """ SELECT deviceID, serialnumber, purchasedate, purchasecost, manufacturer, modelnumber,
         description, weight FROM Device NATURAL JOIN Model WHERE  deviceID = %s"""
         cur.execute(sql, (device_id,))
         r = cur.fetchone()
