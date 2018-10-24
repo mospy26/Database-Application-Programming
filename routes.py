@@ -484,3 +484,8 @@ def addMustafa():
 @app.route("/addEmployee")
 def addEmployee():
     return "Hello World"
+
+
+@app.route("/search")
+def search():
+    return redirect(url_for('search.html')
