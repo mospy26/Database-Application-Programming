@@ -463,26 +463,31 @@ def get_device_repairs(device_id):
     #       - cost
     #       - servicename (of who did the repair)
     # If no repairs = empty list
-
+    
     conn = database_connect()
     if conn is None:
         return None
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair
+        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair NATURAL JOIN Service
 	              WHERE  doneTo = %s"""
         cur.execute(sql, (device_id,))
         r = cur.fetchall()
         cur.close()
         conn.close()
-        return r
+        tuples = {
+            'repairs': r
+        }
+
+        return tuples
     except Exception as e:
         print("Some error occurred.")
         print(e)
     cur.close()
     conn.close()
     return []
+
 
     repairs = [
         [17, 'Never, The', '2018-07-16', '2018-09-22', '$837.13', 'TopDrive'],
@@ -514,7 +519,38 @@ def get_device_information(device_id):
 
     # TODO Dummy Data - Change to be useful!
     # Return all the relevant device information for the device
+       
+    conn = database_connect()
+    if conn is None:
+        return None
 
+    cur = conn.cursor()
+    try:
+        sql = """ SELECT deviceID, serialnumber, purchasedate, purchasecost, manufacturer, modelnumber, 
+        description, weight FROM Device NATURAL JOIN Model WHERE  deviceID = %s"""
+        cur.execute(sql, (device_id,))
+        r = cur.fetchone()
+        cur.close()
+        conn.close()
+        device_info = r
+        tuples = {
+            'device_id': device_info[0],
+            'serial_number': device_info[1],
+            'purchase_date': device_info[2],
+            'purchase_cost': device_info[3],
+            'manufacturer': device_info[4],
+            'model_number': device_info[5],
+            'description': device_info[6],
+            'weight': device_info[7],
+        }
+
+        return tuples
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return None
     device_info = [
         1,                      # DeviceID
         '2721153188',           # SerialNumber
