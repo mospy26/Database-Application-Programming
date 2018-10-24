@@ -8,6 +8,13 @@ import configparser
 import json
 from modules import pg8000
 
+# ----------------- Changes from new skeleton code v3 -----------------
+# import datetime
+# import setup_vendor_path  # noqa
+# -------------------------------------------------------------------------------------
+
+
+
 ################################################################################
 #   Welcome to the database file, where all the query magic happens.
 #   My biggest tip is look at the *week 9 lab*.
@@ -80,13 +87,34 @@ def check_login(employee_id, password):
 	# There are several serious problems. One is that the database
 	# stores passwords directly; a better design would "salt" each password
 	# and then hash the result, and store only the hash.
-	# Also, we are not doing anything to prevent sql injection in this code.
 	# This is ok for a toy assignment, but do not use this code as a model when you are
 	# writing a real system for a client or yourself.
 
     # TODO
     # Check if the user details are correct!
     # Return the relevant information (watch the order!)
+
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # # TODO Dummy data - change rows to be useful!
+    # # NOTE: Make sure you take care of ORDER!!!
+    #
+    # employee_info = [
+    #     1337,                       # empid
+    #     'Porter Tato Head',         # name
+    #     '123 Fake Street',          # homeAddress
+    #     datetime.date(1970, 1, 1),  # dateOfBirth
+    # ]
+    #
+    # user = {
+    #     'empid': employee_info[0],
+    #     'name': employee_info[1],
+    #     'homeAddress': employee_info[2],
+    #     'dateOfBirth': employee_info[3],
+    # }
+    #
+    # return user
+    # -------------------------------------------------------------------------------------
+
     conn = database_connect()
     if conn is None:
         return None
@@ -125,10 +153,18 @@ def is_manager(employee_id):
     Check if the employee is a manager of a department.
         - True => Get the departments as a list.
         - False => Return None
+
+     Get the department the employee is a manager of, if any.
+    # Returns None if the employee doesn't manage a department.
     """
 
     # TODO Dummy Data - Change to be useful!
     # Return a list of departments
+
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # manager_of = 'RND'
+    # return manager_of
+    # -------------------------------------------------------------------------------------
 
     conn = database_connect()
     if conn is None:
@@ -175,12 +211,23 @@ def get_devices_used_by(employee_id):
     """
     Get all devices issued to the user.
         - Return a list of all devices to the user.
+    Get a list of all the devices used by the employee.
     """
 
     # TODO Dummy Data - Change to be useful!
     # Return a list of devices issued to the user!
     # Each "Row" contains [ deviceID, manufacturer, modelNumber]
     # If no devices = empty list []
+
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # devices = [
+    #     [7, 'Zava', '1146805551'],
+    #     [13, 'Skyndu', '5296853075'],
+    #     [24, 'Yakitri', '8406089423'],
+    # ]
+    #
+    # return devices
+    # -------------------------------------------------------------------------------------
 
     conn = database_connect()
     if conn is None:
@@ -227,6 +274,11 @@ def employee_works_in(employee_id):
     # TODO Dummy Data - Change to be useful!
     # Return a list of departments
 
+    # ----------------- Changes from new skeleton code v3 -----------------
+    departments = ['IT', 'Marketing']
+    return departments
+    # ------------------------------------------------------------------------------------
+
     conn = database_connect()
     if conn is None:
         return None
@@ -268,7 +320,24 @@ def get_issued_devices_for_user(employee_id):
     # TODO Dummy Data - Change to be useful!
     # Return a list of devices issued to the user!
     # Each "Row" contains [ deviceID, purchaseDate, modelNumber, manufacturer ]
+    # Each "Row" contains [ deviceID, purchaseDate, manufacturer, modelNumber ]
     # If no devices = empty list []
+
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # devices = [
+    #     [7, datetime.date(2017, 8, 28), 'Zava', '1146805551'],
+    #     [8, datetime.date(2017, 9, 22), 'Topicware', '5798231046'],
+    #     [6123, datetime.date(2017, 9, 5), 'Dabshots', '6481799600'],
+    #     [1373, datetime.date(2018, 4, 19), 'Cogibox', '6700815444'],
+    #     [8, datetime.date(2018, 2, 10), 'Feednation', '2050267274'],
+    #     [36, datetime.date(2017, 11, 5), 'Muxo', '8768929463'],
+    #     [17, datetime.date(2018, 1, 14), 'Izio', '5886976558'],
+    #     [13, datetime.date(2017, 9, 8), 'Skyndu', '5296853075'],
+    #     [24, datetime.date(2017, 10, 22), 'Yakitri', '8406089423'],
+    # ]
+    #
+    # return devices
+    # ------------------------------------------------------------------------------------
 
     conn = database_connect()
     if conn is None:
@@ -444,6 +513,11 @@ def get_all_models():
 
     return tuples
 
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # return models
+    # ----------------- -------------------------------------------------------------------
+
+
 
 #####################################################
 #   Query (d[ii])
@@ -490,6 +564,20 @@ def get_device_repairs(device_id):
     conn.close()
     return []
 
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # repairs = [
+    #     [17, 'Never, The', datetime.date(2018, 7, 16), datetime.date(2018, 9, 22), '$837.13'],
+    #     [18, 'Gonna', datetime.date(2018, 8, 3), datetime.date(2018, 9, 22), '$1726.99'],
+    #     [19, 'Give', datetime.date(2018, 9, 4), datetime.date(2018, 9, 17), '$1751.01'],
+    #     [20, 'You', datetime.date(2018, 7, 21), datetime.date(2018, 9, 23), '$1496.36'],
+    #     [21, 'Up', datetime.date(2018, 8, 17), datetime.date(2018, 9, 18), '$1133.88'],
+    #     [22, 'Never', datetime.date(2018, 8, 8), datetime.date(2018, 9, 24), '$1520.95'],
+    #     [23, 'Gonna', datetime.date(2018, 9, 1), datetime.date(2018, 9, 29), '$611.09'],
+    #     [24, 'Let', datetime.date(2018, 7, 5), datetime.date(2018, 9, 15), '$1736.03'],
+    # ]
+    #
+    # return repairs
+    # ----------------- -------------------------------------------------------------------
 
     repairs = [
         [17, 'Never, The', '2018-07-16', '2018-09-22', '$837.13', 'TopDrive'],
@@ -557,13 +645,17 @@ def get_device_information(device_id):
         1,                      # DeviceID
         '2721153188',           # SerialNumber
         '2017-12-19',           # PurchaseDate
+        # datetime.date(2017, 12, 19),  # PurchaseDate
         '$1009.10',             # PurchaseCost
         'Zoomzone',             # Manufacturer
         '9854941272',           # ModelNumber
+        # 1337,                   # IssuedTo
+        # Removed Description and weight
         'what battery?',        # Description
         256,                    # Weight
     ]
 
+    # devices = {
     tuples = {
         'device_id': device_info[0],
         'serial_number': device_info[1],
@@ -571,12 +663,83 @@ def get_device_information(device_id):
         'purchase_cost': device_info[3],
         'manufacturer': device_info[4],
         'model_number': device_info[5],
+        # 'issued_to': device_info[6],          #Removed description and weight
+
         'description': device_info[6],
         'weight': device_info[7],
     }
 
     return tuples
+# -----------------------------------------------------------------------------------------------------------------------------------
+# NEW FUNCTIONS FROM SKELETON CODE
 
+#####################################################
+#   Query (d[iii/iv])
+#   Get Model Info by Device
+#####################################################
+
+def get_device_model(device_id):
+    """
+    Get model information about a device.
+    """
+
+    # TODO Dummy Data - Change to be useful!
+
+    model_info = [
+        'Zoomzone',              # manufacturer
+        '9854941272',            # modelNumber
+        'brick--I mean laptop',  # description
+        2000,                    # weight
+    ]
+
+    model = {
+        'manufacturer': model_info[0],
+        'model_number': model_info[1],
+        'description': model_info[2],
+        'weight': model_info[3],
+    }
+    return model
+
+
+#####################################################
+#   Query (e)
+#   Get Repair Details
+#####################################################
+
+def get_repair_details(repair_id):
+    """
+    Get information about a repair in detail, including service information.
+    """
+
+    # TODO Dummy data - Change to be useful!
+
+    repair_info = [
+        17,                    # repair ID
+        'Never, The',          # fault report
+        datetime.date(2018, 7, 16),  # start date
+        datetime.date(2018, 9, 22),  # end date
+        '$837.13',             # cost
+        '12345678901',         # service ABN
+        'TopDrive',            # service name
+        'repair@example.com',  # service email
+        1,                     # done to device
+    ]
+
+    repair = {
+        'repair_id': repair_info[0],
+        'fault_report': repair_info[1],
+        'start_date': repair_info[2],
+        'end_date': repair_info[3],
+        'cost': repair_info[4],
+        'done_by': {
+            'abn': repair_info[5],
+            'service_name': repair_info[6],
+            'email': repair_info[7],
+        },
+        'done_to': repair_info[8],
+    }
+    return repair
+# ------------------------------------------------------------------------------------------------------------------------------------
 
 #####################################################
 #   Query (f[ii])
@@ -633,6 +796,7 @@ def get_department_models(department_name):
     }
 
     return tuples
+    # return model_allocations
 
 
 #####################################################
@@ -698,6 +862,7 @@ def get_employee_department_model_device(department_name, manufacturer, model_nu
     }
 
     return tuples
+    # return employee_counts
 
 
 #####################################################
@@ -774,6 +939,7 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
     }
 
     return tuples
+    # return device_assigned
 
 
 #####################################################
@@ -797,6 +963,7 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
     }
 
     return tuples
+    # return device_unissued
 
 
 #####################################################
@@ -812,6 +979,18 @@ def get_employees_in_department(department_name):
     # TODO Dummy Data - Change to be useful!
     # Return the employees in the department.
     # Each "row" has: [ empid, name ]
+
+    # ----------------- Changes from new skeleton code v3 -----------------
+    # employees = [
+    #     [15905, 'Rea Fibbings'],
+    #     [9438, 'Julia Norville'],
+    #     [36020, 'Adora Lansdowne'],
+    #     [98809, 'Nathanial Farfoot'],
+    #     [58407, 'Lynne Smorthit'],
+    # ]
+    #
+    # return employees
+    # ----------------- -------------------------------------------------------------------
 
     employees = [
         ['15905', 'Rea Fibbings'],
@@ -843,6 +1022,20 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
     # Return the devices matching the manufacturer and model number in the
     #   department with the employees assigned.
     # Each row has: [ deviceid, serialnumber, empid, employee name ]
+
+    # ----------------- Changes from new skeleton code v3 -----------------
+    device_employee = [
+        [16, '5952579566', 71800, 'Bond James'],
+        [17, '8357570070', 17804, 'Spongebob'],
+        [18, '8019230513', 73946, 'Chez Grater'],
+        [19, '5816272977', 81716, 'Totoro'],
+        [20, '3768555569', 37387, 'Doraemon'],
+        [21, '3079176995', 52675, 'Fred Weasley'],
+        [22, '3804476813', 36020, 'George Weasley'],
+    ]
+
+    return device_employee
+    # ----------------- -------------------------------------------------------------------
 
     device_employee = [
         [16, '5952579566', '71800', 'Bond James'],
