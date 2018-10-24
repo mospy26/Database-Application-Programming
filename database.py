@@ -180,7 +180,7 @@ def is_manager(employee_id):
         cur.close()
         conn.close()
         manager_of = r
-        if len(manager_of) == 0:
+        if r == None:
             return None
         tuples = {
             'departments': manager_of
@@ -546,7 +546,7 @@ def get_device_repairs(device_id):
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair
+        sql = """ SELECT repairID, faultreport, startdate, enddate, cost, servicename FROM Repair INNER JOIN Service ON(doneBy = abn)
                 WHERE doneTo = %s"""
         cur.execute(sql, (device_id,))
         r = cur.fetchall()
@@ -619,7 +619,7 @@ def get_device_information(device_id):
         sql = """ SELECT deviceID, serialnumber, purchasedate, purchasecost, manufacturer, modelnumber,
         description, weight FROM Device NATURAL JOIN Model WHERE  deviceID = %s"""
         cur.execute(sql, (device_id,))
-        r = cur.fetchall()
+        r = cur.fetchone()
         cur.close()
         conn.close()
         device_info = r
