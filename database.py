@@ -590,6 +590,34 @@ def get_department_models(department_name):
     # Return the models allocated to the department.
     # Each "row" has: [ manufacturer, modelnumber, maxnumber ]
 
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.cursor()
+    try:
+        sql = """ SELECT manufacturer, modelnumber, maxnumber
+                FROM Department D JOIN ModelAllocations MA ON (D.name = MA.department) JOIN Model M ON (M.modelNumber = MA.modelNumber AND M.manufacturer = MA.manufacturer)
+                WHERE manager = %s"""
+        cur.execute(sql, (device_id,))
+        r = cur.fetchone()
+        cur.close()
+        conn.close()
+        device_info = r
+        model_allocations = r
+
+        tuples = {
+            'model_allocations': model_allocations
+        }
+
+        return tuples
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return None
+
     model_allocations = [
         ['Devpulse', '4030141218', 153],
         ['Gabcube', '1666158895', 186],
