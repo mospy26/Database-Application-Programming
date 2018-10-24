@@ -193,7 +193,14 @@ def get_devices_used_by(employee_id):
         r = cur.fetchall()
         cur.close()
         conn.close()
-        return r
+        devices = r
+
+        tuples = {
+            'device_list': devices
+        }
+
+        return tuples
+        
     except Exception as e:
         print("Some error occurred.")
         print(e)
@@ -202,17 +209,7 @@ def get_devices_used_by(employee_id):
     return []
 
 
-    #devices = [
-    #    [7, 'Zava', '1146805551'],
-    #    [13, 'Skyndu', '5296853075'],
-    #    [24, 'Yakitri', '8406089423'],
-    #]
-#
-    #tuples = {
-    #    'device_list': devices
-    #}
-#
-    #return tuples
+    
 
 
 #####################################################
@@ -283,7 +280,10 @@ def get_issued_devices_for_user(employee_id):
         r = cur.fetchall()
         cur.close()
         conn.close()
-        return r
+        tuples = {
+            'device_list': r
+        }
+        return tuples
     except Exception as e:
         print("Some error occurred.")
         print(e)
