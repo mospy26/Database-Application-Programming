@@ -489,9 +489,26 @@ def addMustafa():
 #   Edit User Details
 #####################################################
 
-@app.route("/editDetails")
+@app.route("/editDetails",methods=['GET', 'POST'])
 def editDetails():
-    return "Hello World"
+    if request.method == 'GET':
+        return render_template('settings.html')
+    elif request.method == 'POST':
+        changePassword = request.form.getlist('name')
+        changeContact = request.form.getlist('contact')
+  
+    if len(changePassword) == 0:
+        flash('Invalid password! Please try again')
+        
+    return render_template('settings.html')
+        
+    elif len(changeContact) == 0:
+        flash('Invalid Contact! Please try again')
+        
+    return render_template('settings.html')
+    
+    else 
+        flash('Details updated sucessfully')
     
     
     
