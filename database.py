@@ -1257,7 +1257,7 @@ def search_model(description):
     cur = conn.cursor()
     try:
         description = "%" + description + "%"
-        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE description LIKE %s"""
+        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE description LIKE %s ORDER BY manufacturer"""
         cur.execute(sql, (description, ))
         r = cur.fetchall()
         #if len(r) == 0:
