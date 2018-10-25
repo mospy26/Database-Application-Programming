@@ -492,13 +492,10 @@ def search():
         return render_template('search.html')
     elif request.method == 'POST':
         description = request.form.get('search')
-        
+
         models = database.search_model(description)
-    if models is None:
+    if models is []:
         page['bar'] = False
         flash('Error communicating with database')
         models = {'models': []}
     return render_template('models.html', models=models)
-
- 
-
