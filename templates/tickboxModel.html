@@ -2,11 +2,15 @@
 <div class="content">
     <div class="container">
         <h1 class="title">Models</h1>
-
-        <table class="styled"><input type="checkbox" name="vehicle1" value=""> I have a bike<br>
-                <input type="checkbox" name="vehicle2" value="Car"> I have a car<br>
-                <input type="checkbox" name="vehicle3" value="Boat" checked> I have a boat<br><br>
-                 <input type="submit" value="Submit">
+            <h2> Filter By Weight</h2>
+            
+                <table class="styled"><input type="checkbox" name="1" value=1""> 0 - 20 <br>
+                    <input type="checkbox" name="2" value="2"> 21 - 40 <br>
+                    <input type="checkbox" name="3" value="3" checked> 41 - 60 <br>
+                    <input type="checkbox" name="4" value="4" checked> 61 - 80 <br>
+                    <input type="checkbox" name="5" value="5" checked> 81 - 100<br><br>
+                <br>
+                    <input type="submit" value="Submit">
                 </form>
                 {% for model in models['models'] %}
                     <tr>
