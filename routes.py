@@ -482,10 +482,23 @@ def revoke_device():
 @app.route("/addMustafa")
 def addMustafa():
     return "Hello World"
+    
+    
+    
+#####################################################
+#   Edit User Details
+#####################################################
 
-@app.route("/addEmployee")
-def addEmployee():
+@app.route("/editDetails")
+def editDetails():
     return "Hello World"
+    
+    
+    
+#####################################################
+#   Search description for model
+#####################################################
+
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
