@@ -489,27 +489,35 @@ def addMustafa():
 #   Edit User Details
 #####################################################
 
-@app.route("/editDetails",methods=['GET', 'POST'])
+@app.route("/editDetails", methods=['GET', 'POST'])
 def editDetails():
     if request.method == 'GET':
-        return render_template('settings.html')
+        return render_template('settings.html', page=page)
     elif request.method == 'POST':
-        changePassword = request.form.getlist('password')
-        changeContact = request.form.getlist('contact')
-  
-    if len(changePassword) == 0:
-        flash('Invalid password! Please try again')
+        password = request.form.get('password')
+        contact = request.form.get('contact')
+        print(password, contact)
         
-    return render_template('settings.html')
+    if len(password) == 0 and len(contact) == 0:
+        return render_template('settings.html', page=page)
         
-    elif len(changeContact) == 0:
-        flash('Invalid Contact! Please try again')
-        
-    return render_template('settings.html')
-    
-    else 
-        edit_details(user_details['empid'],password,contact)
+    if len(password) == 0:
+        database.edit_details(user_details['empid'],None,contact)
+        page['bar'] = True
         flash('Details updated sucessfully')
+        return render_template('settings.html', page=page)
+        
+    elif len(contact) == 0:
+        database.edit_details(user_details['empid'],password,None)
+        page['bar'] = True
+        flash('Details updated sucessfully')
+        return render_template('settings.html', page=page)
+    
+    else:
+        database.edit_details(user_details['empid'],password,contact)
+        page['bar'] = True
+        flash('Details updated sucessfully')
+        return render_template('settings.html', page=page)
     
     
     

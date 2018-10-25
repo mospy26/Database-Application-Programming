@@ -1323,17 +1323,18 @@ def edit_details(empid,password, contact):
         return None
     cur = conn.cursor()
     try:
-	sql = """UPDATE EmployeePhoneNumbers SET phoneNumber =%s WHERE empid =%s"""
-	cur.execute(sql, (contact,empid))
-	
-	sql = """UPDATE Employee SET password = %s WHERE empid = %s"""
-	cur.execute(sql, (password,empid))
-
+        if contact is not None:
+            sql = """UPDATE EmployeePhoneNumbers SET phoneNumber =%s WHERE empid =%s"""
+            cur.execute(sql, (contact,empid))
+            conn.commit()
+        if password is not None:
+            sql = """UPDATE Employee SET password = %s WHERE empid = %s"""
+            cur.execute(sql, (password,empid))
+            conn.commit()
         cur.close()
         conn.close()
-        models = r
        
-        return none
+        return None
 
     except Exception as e:
         print("Some error occurred.")
