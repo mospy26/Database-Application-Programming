@@ -5,7 +5,7 @@
 
         <h1>Settings </h1><hr>
           <h2>Change User Details :</h2><br>
-            <form>
+             <form method="POST" action="{{url_for('editDetails')}}">
                 New password:<br>
                 <input type="text" name="password" placeholder="Enter new password" /><br><br>
                 New Contact Number:<br>
