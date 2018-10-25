@@ -1223,24 +1223,25 @@ def revoke_device_from_employee(employee_id, device_id):
     conn = database_connect()
     if conn is None:
         return (False, None)
-    
+
     cur = conn.cursor()
-    
+
     try:
         sql = """SELECT 1 FROM Device WHERE deviceid = %s AND issuedTo is NOT NULL"""
         cur.execute(sql, (device_id,))
         r = cur.fetchone()
         if r is None:
             return (False, "Device already revoked")
-        
+
         sql = """SELECT 1 FROM Device WHERE deviceid = %s AND issuedTo = %s"""
         cur.execute(sql, (device_id, employee_id))
         r = cur.fetchone()
         if r is None:
             return (False, "Employee not assigned to device")
-        
+
         sql = """UPDATE Device SET issuedTo = NULL WHERE issuedTo = %s"""
         cur.execute(sql, (employee_id,))
+        conn.commit()
         cur.close()
         conn.close()
         return (True, None)
