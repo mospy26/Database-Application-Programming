@@ -12,6 +12,7 @@ from modules import *
 from flask import *
 import database
 
+desc = ""
 user_details = {}                   # User details kept for us
 session = {}                        # Session information (logged in state)
 page = {}                           # Determines the page information
@@ -488,11 +489,12 @@ def addEmployee():
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
+    global desc
     if request.method == 'GET':
         return render_template('search.html')
     elif request.method == 'POST':
         description = request.form.get('search')
-
+        desc += description
         models = database.search_model(description)
     if len(models['models']) == 0:
         page['bar'] = False
@@ -502,12 +504,13 @@ def search():
 
 @app.route("/tickboxModel", methods=['POST', 'GET'])
 def filter():
+    global desc
     if request.method == 'GET':
         return render_template('tickboxModel.html')
     if request.method == 'POST':
         weights = request.form.getlist('weight')
 
-        models = database.search_model_by_weight(weights)
+        models = database.search_model_by_weight(weights, desc)
     #if len(models['models']) == 0:
     #    page['bar'] = False
     #    flash('No models with that keyword in description found!')

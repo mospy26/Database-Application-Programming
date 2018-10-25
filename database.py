@@ -7,7 +7,6 @@ Contains all interactions between the webapp and the queries to the database.
 import configparser
 import json
 from modules import pg8000
-import traceback
 
 # ----------------- Changes from new skeleton code v3 -----------------
 # import datetime
@@ -1280,7 +1279,7 @@ def search_model(description):
     conn.close()
     return None
 
-def search_model_by_weight(weights):
+def search_model_by_weight(weights, description):
     conn = database_connect()
     if conn is None:
         return None
@@ -1288,15 +1287,16 @@ def search_model_by_weight(weights):
     cur = conn.cursor()
     try:
         r = []
+        description = "%" + description + "%"
         for weight in weights:
             sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE
-            weight BETWEEN %s and %s ORDER BY manufacturer"""
+            weight BETWEEN %s and %s AND description LIKE %s ORDER BY manufacturer"""
             if weight == 0:
                 range = 20
             else:
                 range = 19
 
-            cur.execute(sql, (str(weight), str(int(weight) + range)))
+            cur.execute(sql, (str(weight), str(int(weight) + range), description))
             r += cur.fetchall()
         #if len(r) == 0:
         #    return None
@@ -1312,7 +1312,6 @@ def search_model_by_weight(weights):
     except Exception as e:
         print("Some error occurred.")
         print(str(e))
-        traceback.print_exc()
     cur.close()
     conn.close()
     return None
