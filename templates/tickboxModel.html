@@ -1,0 +1,23 @@
+{% include 'top.html' %}
+<div class="content">
+    <div class="container">
+        <h1 class="title">Models</h1>
+
+        <table class="styled"><input type="checkbox" name="vehicle1" value=""> I have a bike<br>
+                <input type="checkbox" name="vehicle2" value="Car"> I have a car<br>
+                <input type="checkbox" name="vehicle3" value="Boat" checked> I have a boat<br><br>
+                 <input type="submit" value="Submit">
+                </form>
+                {% for model in models['models'] %}
+                    <tr>
+                        <td>{{ model[0] }}</td>
+                        <td>{{ model[1] }}</td>
+                        <td>{{ model[2] }}</td>
+                        <td>{{ model[3] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% include 'bottom.html' %}

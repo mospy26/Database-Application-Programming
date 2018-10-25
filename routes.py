@@ -498,4 +498,4 @@ def search():
         page['bar'] = False
         flash('No models with that keyword in description found!')
         models = {'models': []}
-    return render_template('models.html', models=models, page=page)
+    return render_template('tickboxModel.html', models=models, page=page)
