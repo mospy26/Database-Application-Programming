@@ -1316,6 +1316,39 @@ def search_model_by_weight(weights, description):
     conn.close()
     return None
 
+
+def edit_details(empid,password, contact):
+    conn = database_connect()
+    if conn is None:
+        return None
+    cur = conn.cursor()
+    try:
+	sql = """UPDATE EmployeePhoneNumbers SET phoneNumber =%s WHERE empid =%s"""
+	cur.execute(sql, (contact,empid))
+	
+	sql = """UPDATE Employee SET password = %s WHERE empid = %s"""
+	cur.execute(sql, (password,empid))
+
+        cur.close()
+        conn.close()
+        models = r
+       
+        return none
+
+    except Exception as e:
+        print("Some error occurred.")
+        print(str(e))
+    cur.close()
+    conn.close()
+    return None
+
+
+
+
+
+
+
+
 # =================================================================
 # =================================================================
 
