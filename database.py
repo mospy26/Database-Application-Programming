@@ -126,6 +126,8 @@ def check_login(employee_id, password):
         WHERE empID = %s and password = %s"""
         cur.execute(sql, (employee_id, password))
         r = cur.fetchone()
+        if r is None:
+            return None
         cur.close()
         conn.close()
         employee_info = r
@@ -180,7 +182,7 @@ def is_manager(employee_id):
         cur.close()
         conn.close()
         manager_of = r
-        if r == None:
+        if r is None:
             return None
         tuples = {
             'departments': manager_of
@@ -686,36 +688,36 @@ def get_device_model(device_id):
     # TODO Dummy Data - Change to be useful!
 
     # ------------------------------------------ Feedback please. Not sure ------------------------------------------
-     conn = database_connect()
-     if(conn is None):
-         return None
-     cur = conn.cursor()
-     try:
-         sql = """SELECT M.manufacturer, M.modelnumber, M.description, M.weight
+    conn = database_connect()
+    if(conn is None):
+        return None
+    cur = conn.cursor()
+    try:
+        sql = """SELECT M.manufacturer, M.modelnumber, M.description, M.weight
                        FROM (Device D
                              INNER JOIN Model M on(D.modelnumber = M.modelnumber))
                        WHERE D.deviceid = %s;"""
 
-         cur.execute(sql, device_id)
-         r = cur.fetchall()
-         cur.close()
-         conn.close()
-         model_info = r
+        cur.execute(sql, device_id)
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        model_info = r
 
-         model = {
-             'manufacturer': model_info[0],
-             'model_number': model_info[1],
-             'description': model_info[2],
-             'weight': model_info[3],
-             }
-         return model
+        model = {
+            'manufacturer': model_info[0],
+            'model_number': model_info[1],
+            'description': model_info[2],
+            'weight': model_info[3],
+        }
+        return model
 
-     except Exception as e:
-         print("Some error occured.")
-         print(e)
-     cur.close()
-     conn.close()
-     return None
+    except Exception as e:
+        print("Some error occured.")
+        print(e)
+    cur.close()
+    conn.close()
+    return None
 
      # model_info = [
      #     'Zoomzone',              # manufacturer
@@ -744,7 +746,40 @@ def get_repair_details(repair_id):
     """
 
     # TODO Dummy data - Change to be useful!
-
+    
+    conn = database_connect()
+    if conn is None:
+        return None
+    
+    cur = conn.cursor()
+    try:
+        sql = """SELECT repairID, faultreport, startdate, enddate, cost, abn,
+            serviceName, email, doneTo FROM Repair JOIN Service ON(doneBy = abn) WHERE repairID = %s"""
+            
+        cur.execute(sql, (repairid,))
+        repair_info = cur.fetchone()
+        repair = {
+            'repair_id': repair_info[0],
+            'fault_report': repair_info[1],
+            'start_date': repair_info[2],
+            'end_date': repair_info[3],
+            'cost': repair_info[4],
+            'done_by': {
+                'abn': repair_info[5],
+                'service_name': repair_info[6],
+                'email': repair_info[7],
+            },
+            'done_to': repair_info[8],
+        }
+        cur.close()
+        conn.close()
+        return repair
+    except:
+        print("Error")
+    cur.close()
+    conn.close()
+    return None
+    
     repair_info = [
         17,                    # repair ID
         'Never, The',          # fault report
@@ -757,20 +792,7 @@ def get_repair_details(repair_id):
         1,                     # done to device
     ]
 
-    repair = {
-        'repair_id': repair_info[0],
-        'fault_report': repair_info[1],
-        'start_date': repair_info[2],
-        'end_date': repair_info[3],
-        'cost': repair_info[4],
-        'done_by': {
-            'abn': repair_info[5],
-            'service_name': repair_info[6],
-            'email': repair_info[7],
-        },
-        'done_to': repair_info[8],
-    }
-    return repair
+    
 # ------------------------------------------------------------------------------------------------------------------------------------
 
 #####################################################
@@ -926,7 +948,7 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
     if conn is None:
         return None
 
-    cur = conn.coursor()
+    cur = conn.cursor()
 
     try:
         sql = """SELECT
@@ -990,13 +1012,29 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
     # TODO Dummy Data - Change to be useful!
     # Return each device of this model that has not been issued
     # Each "row" has: [ device_id ]
+    conn = database_connect()
+    if conn is None:
+        return None
+    
+    cur = conn.cursor()
+    try:
+        sql = """SELECT deviceID FROM Device WHERE issuedTo is NULL AND model_number = %s AND manufacturer = %s"""
+        cur.execute(sql, (model_number, manufacturer))
+        device_unissued = cur.fetchall()
+        tuples = {
+            'devices': device_unissued
+        }
+        cur.close()
+        conn.close()
+        return tuples
+    except:
+        print("Error")
+    cur.close()
+    conn.close()
+    return None
     device_unissued = [123656, 123132, 51413, 8765]
 
-    tuples = {
-        'devices': device_unissued
-    }
-
-    return tuples
+    
     # return device_unissued
 
 
@@ -1025,7 +1063,27 @@ def get_employees_in_department(department_name):
     #
     # return employees
     # ----------------- -------------------------------------------------------------------
-
+    conn = database_connect()
+    if conn is None:
+        return None
+    
+    cur = conn.cursor()
+    try:
+        sql = """SELECT empid, name FROM EmployeeDepartments JOIN Employee USING(empid) WHERE 
+                department = %s"""
+        cur.execute(sql, (department_name,))
+        employees = cur.fetchall()
+        tuples = {
+            'employees': employees
+        }
+        cur.close()
+        conn.close()
+        return tuples
+    except:
+        print("Error in get_employees_in_department")
+    cur.close()
+    conn.close()
+    return None
     employees = [
         ['15905', 'Rea Fibbings'],
         ['09438', 'Julia Norville'],
@@ -1034,11 +1092,7 @@ def get_employees_in_department(department_name):
         ['58407', 'Lynne Smorthit'],
     ]
 
-    tuples = {
-        'employees': employees
-    }
-
-    return tuples
+   
 
 
 #####################################################
@@ -1057,6 +1111,28 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
     #   department with the employees assigned.
     # Each row has: [ deviceid, serialnumber, empid, employee name ]
 
+    conn  = database_connect()
+    if conn is None:
+        return None
+    cur = conn.cursor()
+    
+    try:
+        sql = """SELECT deviceid, serialnumber, empid, name FROM Device JOIN Employee ON(issuedTo=empID) 
+                JOIN EmployeeDepartments USING(empid) WHERE manufacturer = %s AND modelNumber = %s 
+                AND department = %s"""
+        cur.execute(sql, (manufacturer, modelNumber, department_name))
+        device_employee = cur.fetchall()
+        tuples = {
+            'device_list': device_employee
+        }
+        cur.close()
+        conn.close()
+        return tuples
+    except:
+        print("Error in get_device_employee_department")
+    cur.close()
+    conn.close()
+    return None
     # ----------------- Changes from new skeleton code v3 -----------------
     device_employee = [
         [16, '5952579566', 71800, 'Bond James'],
@@ -1081,11 +1157,7 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
         [22, '3804476813', '36020', 'George Weasley'],
     ]
 
-    tuples = {
-        'device_list': device_employee
-    }
-
-    return tuples
+    
 
 
 #####################################################
@@ -1106,7 +1178,29 @@ def issue_device_to_employee(employee_id, device_id):
     #       - Employee not in department?
 
     # return (False, "Device already issued")
-    return (True, None)
+    conn = database_connect()
+    if conn is None:
+        return (False, None)
+    
+    cur = conn.cursor()
+    
+    try:
+        sql = """SELECT 1 FROM Device WHERE deviceid = %s AND issuedTo is NULL"""
+        cur.execute(sql, (device_id,))
+        r = cur.fetchone()
+        if r is None:
+            return (False, "Device already issued")
+        
+        
+        sql = """UPDATE Device SET issuedTo = %s WHERE deviceID = %s"""
+        cur.execute(sql, (employee_id, device_id))
+        cur.close()
+        conn.close()
+        return (True, None)
+    except:
+        cur.close()
+        conn.close()
+        return (False, None)
 
 
 #####################################################
