@@ -1278,6 +1278,44 @@ def search_model(description):
     cur.close()
     conn.close()
     return None
+    
+def search_model_by_weight(weights):
+    conn = database_connect()
+    if conn is None:
+        return None
+
+    cur = conn.cursor()
+    try:
+        r = []
+        for weight in weights:
+            sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE 
+            weight BETWEEN %s and %s ORDER BY manufacturer"""
+            range = -1
+            if weight == 0:
+                range = 20
+            else:
+                range = 19
+                
+            cur.execute(sql, (weight, weight + range))
+            r += cur.fetchall()
+        #if len(r) == 0:
+        #    return None
+        cur.close()
+        conn.close()
+        models = r
+        tuples = {
+            'models': models
+        }
+
+        return tuples
+
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return None
+    
 # =================================================================
 # =================================================================
 

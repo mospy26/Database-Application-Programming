@@ -4,11 +4,13 @@
         <h1 class="title">Models</h1>
             <h2> Filter By Weight</h2>
             
-                <table class="styled"><input type="checkbox" name="1" value="1"> 0 - 20 <br>
-                    <input type="checkbox" name="2" value="2"> 21 - 40 <br>
-                    <input type="checkbox" name="3" value="3"> 41 - 60 <br>
-                    <input type="checkbox" name="4" value="4"> 61 - 80 <br>
-                    <input type="checkbox" name="5" value="5"> 81 - 100 <br><br>
+                <table class="styled">
+                <form method='POST' action="{{url_for('tickboxModel')}}">
+                <input type="checkbox" name="weight" value="0"> 0 - 20 <br>
+                    <input type="checkbox" name="weight" value="21"> 21 - 40 <br>
+                    <input type="checkbox" name="weight" value="41"> 41 - 60 <br>
+                    <input type="checkbox" name="weight" value="61"> 61 - 80 <br>
+                    <input type="checkbox" name="weight" value="81"> 81 - 100 <br><br>
                 <br>
                     <input type="submit" value="Submit">
                 </form>
