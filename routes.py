@@ -494,7 +494,7 @@ def editDetails():
     if request.method == 'GET':
         return render_template('settings.html')
     elif request.method == 'POST':
-        changePassword = request.form.getlist('name')
+        changePassword = request.form.getlist('password')
         changeContact = request.form.getlist('contact')
   
     if len(changePassword) == 0:
@@ -508,6 +508,7 @@ def editDetails():
     return render_template('settings.html')
     
     else 
+        edit_details(user_details['empid'],password,contact)
         flash('Details updated sucessfully')
     
     
