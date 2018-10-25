@@ -1,0 +1,16 @@
+{% include 'top.html' %}
+<div class="wrapper">
+
+
+
+        <h1>Type keyword to search model </h1>
+        <hr>
+        <h2>Keyword :</h2>
+        <form method="POST" action="{{url_for('search')}}">
+       <input type="text" name="search" placeholder="Search..">
+          <button type="submit"<!--<i class="fa fa-search"></i><!-->
+          Submit
+                        </button>
+        </form>
+</div>
+{% include 'bottom.html'%}

@@ -9,7 +9,7 @@
                 <label for="empid"> Employee ID: </label>
                 <select name="empid" placeholder="Employee" required>
                     {% for employee in employees['employees'] %}
-                        <option value="{{employee[0]}}">{{employee[1]}}</option>
+                        <option value="{{employee[1]}}">{{employee[1]}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -33,6 +33,7 @@
             <div class="pure-control-group">
                 <label for="deviceid">Device ID</label>
                 <select name="deviceid" placeholder="deviceid" id='deviceid' required>
+                    
                 </select>
             </div>
             <button type="submit" class="flat">Issue Device</button>

@@ -1222,7 +1222,34 @@ def revoke_device_from_employee(employee_id, device_id):
     # return (False, "Device already unassigned")
     return (True, None)
 
+def search_model(description):
+    conn = database_connect()
+    if conn is None:
+        return None
 
+    cur = conn.cursor()
+    try:
+        description = "%" + description + "%"
+        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE description LIKE %s"""
+        cur.execute(sql, (description, ))
+        r = cur.fetchall()
+        if len(r) == 0:
+            return None
+        cur.close()
+        conn.close()
+        models = r
+        tuples = {
+            'models': models
+        }
+
+        return tuples
+
+    except Exception as e:
+        print("Some error occurred.")
+        print(e)
+    cur.close()
+    conn.close()
+    return None
 # =================================================================
 # =================================================================
 

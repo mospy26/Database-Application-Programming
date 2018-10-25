@@ -351,7 +351,8 @@ def issue_device():
                                        page=page,
                                        session=session,
                                        employees=employees,
-                                       models=models)
+                                       models=models
+                                       )
 
 
 #####################################################
@@ -485,41 +486,19 @@ def addMustafa():
 def addEmployee():
     return "Hello World"
 
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+    if request.method == 'GET':
+        return render_template('search.html')
+    elif request.method == 'POST':
+        description = request.form.get('search')
+        
+        models = database.search_model(description)
+    if models is None:
+        page['bar'] = False
+        flash('Error communicating with database')
+        models = {'models': []}
+    return render_template('models.html', models=models)
 
+ 
 
-
-
-
-
-#####################################################
-#   Search page (GET and POST, seaarch page associated)
-#####################################################
-
-
-
-@app.route('/searchTab',methods=['POST'])
-def searchDB():
-
-    search =SearchModel(request.form)
-    if request.method == 'POST':
-
-        return(render_template('searchTab.html', form=search))
-
-@app.route('/search')
-def SearchModel(search):
-    results = []
-    search_string = search.data['search']
-
-    if len(search.data['search']) == 0:
-        flash('Have not tnput any string')
-        return redirect('/searchTab')
-
-    if not results:
-        flash('No results found')
-        return redirect('/searchTab')
-    else:
-        # display Results
-        table =Results(results)
-        table.border = True
-
-    return render_template('search.html', table=table)
