@@ -746,16 +746,16 @@ def get_repair_details(repair_id):
     """
 
     # TODO Dummy data - Change to be useful!
-    
+
     conn = database_connect()
     if conn is None:
         return None
-    
+
     cur = conn.cursor()
     try:
         sql = """SELECT repairID, faultreport, startdate, enddate, cost, abn,
             serviceName, email, doneTo FROM Repair JOIN Service ON(doneBy = abn) WHERE repairID = %s"""
-            
+
         cur.execute(sql, (repairid,))
         repair_info = cur.fetchone()
         repair = {
@@ -779,7 +779,7 @@ def get_repair_details(repair_id):
     cur.close()
     conn.close()
     return None
-    
+
     repair_info = [
         17,                    # repair ID
         'Never, The',          # fault report
@@ -792,7 +792,7 @@ def get_repair_details(repair_id):
         1,                     # done to device
     ]
 
-    
+
 # ------------------------------------------------------------------------------------------------------------------------------------
 
 #####################################################
@@ -1014,7 +1014,7 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
     conn = database_connect()
     if conn is None:
         return None
-    
+
     cur = conn.cursor()
     try:
         sql = """SELECT deviceID FROM Device WHERE issuedTo is NULL AND model_number = %s AND manufacturer = %s"""
@@ -1033,7 +1033,7 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
     return None
     device_unissued = [123656, 123132, 51413, 8765]
 
-    
+
     # return device_unissued
 
 
@@ -1065,10 +1065,10 @@ def get_employees_in_department(department_name):
     conn = database_connect()
     if conn is None:
         return None
-    
+
     cur = conn.cursor()
     try:
-        sql = """SELECT empid, name FROM EmployeeDepartments JOIN Employee USING(empid) WHERE 
+        sql = """SELECT empid, name FROM EmployeeDepartments JOIN Employee USING(empid) WHERE
                 department = %s"""
         cur.execute(sql, (department_name,))
         employees = cur.fetchall()
@@ -1091,7 +1091,7 @@ def get_employees_in_department(department_name):
         ['58407', 'Lynne Smorthit'],
     ]
 
-   
+
 
 
 #####################################################
@@ -1114,10 +1114,10 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
     if conn is None:
         return None
     cur = conn.cursor()
-    
+
     try:
-        sql = """SELECT deviceid, serialnumber, empid, name FROM Device JOIN Employee ON(issuedTo=empID) 
-                JOIN EmployeeDepartments USING(empid) WHERE manufacturer = %s AND modelNumber = %s 
+        sql = """SELECT deviceid, serialnumber, empid, name FROM Device JOIN Employee ON(issuedTo=empID)
+                JOIN EmployeeDepartments USING(empid) WHERE manufacturer = %s AND modelNumber = %s
                 AND department = %s"""
         cur.execute(sql, (manufacturer, modelNumber, department_name))
         device_employee = cur.fetchall()
@@ -1156,7 +1156,7 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
         [22, '3804476813', '36020', 'George Weasley'],
     ]
 
-    
+
 
 
 #####################################################
@@ -1180,17 +1180,17 @@ def issue_device_to_employee(employee_id, device_id):
     conn = database_connect()
     if conn is None:
         return (False, None)
-    
+
     cur = conn.cursor()
-    
+
     try:
         sql = """SELECT 1 FROM Device WHERE deviceid = %s AND issuedTo is NULL"""
         cur.execute(sql, (device_id,))
         r = cur.fetchone()
         if r is None:
             return (False, "Device already issued")
-        
-        
+
+
         sql = """UPDATE Device SET issuedTo = %s WHERE deviceID = %s"""
         cur.execute(sql, (employee_id, device_id))
         cur.close()
@@ -1260,8 +1260,8 @@ def search_model(description):
         sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE description LIKE %s"""
         cur.execute(sql, (description, ))
         r = cur.fetchall()
-        if len(r) == 0:
-            return None
+        #if len(r) == 0:
+        #    return None
         cur.close()
         conn.close()
         models = r
