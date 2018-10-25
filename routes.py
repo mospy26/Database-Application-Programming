@@ -494,8 +494,8 @@ def search():
         description = request.form.get('search')
 
         models = database.search_model(description)
-    if models is []:
+    if len(models['models']) == 0:
         page['bar'] = False
-        flash('Error communicating with database')
+        flash('No models with that keyword in description found!')
         models = {'models': []}
-    return render_template('models.html', models=models)
+    return render_template('models.html', models=models, page=page)
