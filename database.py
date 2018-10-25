@@ -812,7 +812,6 @@ def get_department_models(department_name):
     conn = database_connect()
     if conn is None:
         return None
-    print("Z"*1000 + department_name)
     cur = conn.cursor()
     try:
         sql = """SELECT M.manufacturer, M.modelnumber, maxnumber
