@@ -209,6 +209,58 @@ def device(deviceid):
                            repairs=repairs,
                            session=session,
                            page=page))
+                           
+#####################################################
+#   Device Model
+#####################################################
+
+@app.route('/device/<int:deviceid>/model')
+def devicemodel(deviceid):
+    """
+    Show the device details
+        - Repairs.
+        - Device information.
+    """
+    # Check if the user is logged in, if not: back to login.
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
+
+    model_info = database.get_device_model(deviceid)
+
+    if model_info is None:
+        page['bar'] = False
+        flash('Error communicating with database')
+        return redirect(url_for('index'))
+
+    return(render_template('model.html',
+                           model_info=model_info,
+                           session=session,
+                           page=page))
+                           
+#####################################################
+#   Repair (Single Repair View)
+#####################################################
+
+@app.route('/repair/<int:repairid>')
+def repair(repairid):
+    """
+    Show the repair details, including service info.
+    """
+    # Check if the user is logged in, if not: back to login.
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login'))
+
+    repair_info = database.get_repair_details(repairid)
+
+    if repair_info is None:
+        page['bar'] = False
+        flash('Error communicating with database')
+        return redirect(url_for('index'))
+
+    return render_template('repair.html',
+                           repair_info=repair_info,
+                           session=session,
+                           page=page)                           
 
 ################################################################################
 #                        Manager Section
@@ -478,12 +530,6 @@ def revoke_device():
                                 manufacturer=manufacturer,
                                 empid=employee_id,
                                 department=department))
-
-@app.route("/addMustafa")
-def addMustafa():
-    return "Hello World"
-    
-    
     
 #####################################################
 #   Edit User Details

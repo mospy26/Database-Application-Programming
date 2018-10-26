@@ -619,7 +619,7 @@ def get_device_information(device_id):
     cur = conn.cursor()
     try:
         sql = """ SELECT deviceID, serialnumber, purchasedate, purchasecost, manufacturer, modelnumber,
-        description, weight FROM Device NATURAL JOIN Model WHERE  deviceID = %s"""
+        issuedTo FROM Device NATURAL JOIN Model WHERE deviceID = %s"""
         cur.execute(sql, (device_id,))
         r = cur.fetchone()
         cur.close()
@@ -632,8 +632,7 @@ def get_device_information(device_id):
             'purchase_cost': device_info[3],
             'manufacturer': device_info[4],
             'model_number': device_info[5],
-            'description': device_info[6],
-            'weight': device_info[7],
+            'issued_to': device_info[6],
         }
 
         return tuples
@@ -694,12 +693,11 @@ def get_device_model(device_id):
     cur = conn.cursor()
     try:
         sql = """SELECT M.manufacturer, M.modelnumber, M.description, M.weight
-                       FROM (Device D
-                             INNER JOIN Model M on(D.modelnumber = M.modelnumber))
-                       WHERE D.deviceid = %s;"""
+                       FROM Device NATURAL JOIN Model M
+                       WHERE deviceid = %s;"""
 
-        cur.execute(sql, device_id)
-        r = cur.fetchall()
+        cur.execute(sql, (device_id,))
+        r = cur.fetchone()
         cur.close()
         conn.close()
         model_info = r
@@ -756,7 +754,7 @@ def get_repair_details(repair_id):
         sql = """SELECT repairID, faultreport, startdate, enddate, cost, abn,
             serviceName, email, doneTo FROM Repair JOIN Service ON(doneBy = abn) WHERE repairID = %s"""
 
-        cur.execute(sql, (repairid,))
+        cur.execute(sql, (repair_id,))
         repair_info = cur.fetchone()
         repair = {
             'repair_id': repair_info[0],
@@ -874,8 +872,8 @@ def get_employee_department_model_device(department_name, manufacturer, model_nu
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT empID, count(deviceID)
-            FROM Employee JOIN Device ON (empID = issuedTo) NATURAL JOIN EmployeeDepartments
+        sql = """ SELECT empID, name, count(deviceID)
+            FROM Employee JOIN Device ON(empid = issuedto) NATURAL JOIN EmployeeDepartments
             WHERE department = %s
             AND modelNumber = %s
             AND manufacturer = %s
@@ -953,8 +951,8 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
         sql = """SELECT
 	                   deviceID,
 	                   CASE
-                            WHEN issuedTo = %s THEN 'Yes'
-                            ELSE 'No'
+                            WHEN issuedTo = %s THEN 'True'
+                            ELSE 'False'
                             END as issuedTo
                     FROM (Device
 		                  Inner join Employee on(empid = issuedto))
@@ -964,13 +962,13 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
 		                  modelNumber = %s;"""
 
         cur.execute(sql, (employee_id, manufacturer, model_number))
-        r = cur.fetchone()
+        r = cur.fetchall()
         cur.close()
         conn.close()
 
         tuples = {
-            'device_assigned': device_assigned,
-            }
+            'device_assigned': r,
+        }
 
         return tuples
 
@@ -979,7 +977,7 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
         print(e)
     cur.close()
     conn.close()
-    return[]
+    return None
 
 
     device_assigned = [
@@ -1315,7 +1313,6 @@ def search_model_by_weight(weights, description):
     cur.close()
     conn.close()
     return None
-
 
 def edit_details(empid, details):
     conn = database_connect()

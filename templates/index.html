@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 {% for dev in used_by['device_list'] %}
-                    <tr>
+                    <tr class="clickable-tr" data-href="{{ url_for('device', deviceid=dev[0]) }}">
                         <td style="text-align: center">{{ dev[0] }}</td>
                         <td>{{ dev[2] }}</td>
                         <td>{{ dev[1] }}</td>

@@ -20,25 +20,25 @@
                 <td> Purchase Cost</td>
                 <td> {{device_info.purchase_cost}} </td>
             </tr>
-            <tr>
-                <!-- changed this part -->
-                <td> Model Number</td>
-                <td> {{device_info.model_number}} </td>
-            </tr>
+            
             <tr>
                 <td> Manufacturer </td>
                 <td> {{device_info.manufacturer}} </td>
             </tr>
-            <tr>
-                <td> Description </td>
-                <td> {{device_info.description}} </td>
+            
+            <tr class="clickable-tr" data-href="{{ url_for('devicemodel', deviceid=device_info.device_id) }}">
+                <!-- changed this part -->
+                <td> Model Number</td>
+                <td> {{device_info.model_number}} </td>
             </tr>
+            
             <tr>
-                <td> Weight </td>
-                <td> {{device_info.weight}}g </td>
+                <td> Issued To </td>
+                <td> {{device_info.issued_to}} </td>
             </tr>
+            
         </table>
-
+        <p><a href="{{ url_for('devicemodel', deviceid=device_info.device_id) }}">Model information</a></p>
         <hr>
 
         <h3> Repairs </h3>
@@ -56,7 +56,7 @@
             </thead>
             <tbody>
                 {% for instance in repairs['repairs'] %}
-                    <tr>
+                    <tr class="clickable-tr" data-href="{{ url_for('repair', repairid=instance[0]) }}">
                         <td style="text-align: center">{{ instance[0] }}</td>
                         <td>{{ instance[1] }}</td>
                         <td>{{ instance[2] }}</td>
