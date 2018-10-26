@@ -880,6 +880,8 @@ def get_employee_department_model_device(department_name, manufacturer, model_nu
             GROUP BY empID, name"""
         cur.execute(sql, (department_name, model_number, manufacturer))
         r = cur.fetchall()
+        if len(r) == 0:
+            return None
         cur.close()
         conn.close()
         employee_counts = r
@@ -1237,8 +1239,8 @@ def revoke_device_from_employee(employee_id, device_id):
         if r is None:
             return (False, "Employee not assigned to device")
 
-        sql = """UPDATE Device SET issuedTo = NULL WHERE issuedTo = %s"""
-        cur.execute(sql, (employee_id,))
+        sql = """UPDATE Device SET issuedTo = NULL WHERE issuedTo = %s and deviceid = %s"""
+        cur.execute(sql, (employee_id, device_id))
         conn.commit()
         cur.close()
         conn.close()
