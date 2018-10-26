@@ -872,12 +872,12 @@ def get_employee_department_model_device(department_name, manufacturer, model_nu
 
     cur = conn.cursor()
     try:
-        sql = """ SELECT empID, name, count(deviceID)
+        sql = """ SELECT empID, name, count(deviceid)
             FROM Employee JOIN Device ON(empid = issuedto) NATURAL JOIN EmployeeDepartments
             WHERE department = %s
             AND modelNumber = %s
             AND manufacturer = %s
-            GROUP BY empID"""
+            GROUP BY empID, name"""
         cur.execute(sql, (department_name, model_number, manufacturer))
         r = cur.fetchall()
         cur.close()
@@ -1187,12 +1187,6 @@ def issue_device_to_employee(employee_id, device_id):
         r = cur.fetchone()
         if r is None:
             return (False, "Device already issued")
-        
-        sql = """SELECT 1 FROM Device WHERE issuedTo = %s"""
-        cur.execute(sql, (employee_id, ))
-        r = cur.fetchone()
-        if r is not None:
-            return (False, "Employee already issued a device")
             
         sql = """UPDATE Device SET issuedTo = %s WHERE deviceID = %s"""
         cur.execute(sql, (employee_id, device_id))
