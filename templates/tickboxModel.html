@@ -4,7 +4,7 @@
         <h1 class="title">Models</h1>
             <h2> Filter By Weight</h2>
 
-                <table class="styled">
+            <table class="styled">
                 <form method='POST' action="{{url_for('filter')}}">
                 <input type="checkbox" name="weight" value="0"> 0 - 20 <br>
                     <input type="checkbox" name="weight" value="21"> 21 - 40 <br>
@@ -14,6 +14,20 @@
                 <br>
                     <input type="submit" value="Submit">
                 </form>
+                
+            </tbody>
+        </table>
+        
+        <table class="styled">
+            <thead>
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Description</th>
+                    <th>Model Number</th>
+                    <th>Weight(g)</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for model in models['models'] %}
                     <tr>
                         <td>{{ model[0] }}</td>
