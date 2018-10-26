@@ -45,8 +45,9 @@ a:hover {
     clear: both;
 }
 .wrapper{
-border:1px solid #000;
-  display:inline-block;
+      margin: auto;
+      border:1px solid #000;
+      display:inline-block;
 }
 
 input,
