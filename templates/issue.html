@@ -9,7 +9,7 @@
                 <label for="empid"> Employee ID: </label>
                 <select name="empid" placeholder="Employee" required>
                     {% for employee in employees['employees'] %}
-                        <option value="{{employee[1]}}">{{employee[1]}}</option>
+                        <option value="{{employee[0]}}">{{employee[0]}}</option>
                     {% endfor %}
                 </select>
             </div>

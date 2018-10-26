@@ -1015,7 +1015,7 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
 
     cur = conn.cursor()
     try:
-        sql = """SELECT deviceID FROM Device WHERE issuedTo is NULL AND model_number = %s AND manufacturer = %s"""
+        sql = """SELECT deviceID FROM Device WHERE issuedTo is NULL AND modelnumber = %s AND manufacturer = %s"""
         cur.execute(sql, (model_number, manufacturer))
         device_unissued = cur.fetchall()
         tuples = {
@@ -1025,7 +1025,7 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
         conn.close()
         return tuples
     except:
-        print("Error")
+        print("Error in get_unassigned_devices_for_model")
     cur.close()
     conn.close()
     return None
@@ -1187,10 +1187,16 @@ def issue_device_to_employee(employee_id, device_id):
         r = cur.fetchone()
         if r is None:
             return (False, "Device already issued")
-
-
+        
+        sql = """SELECT 1 FROM Device WHERE issuedTo = %s"""
+        cur.execute(sql, (employee_id, ))
+        r = cur.fetchone()
+        if r is not None:
+            return (False, "Employee already issued a device")
+            
         sql = """UPDATE Device SET issuedTo = %s WHERE deviceID = %s"""
         cur.execute(sql, (employee_id, device_id))
+        conn.commit()
         cur.close()
         conn.close()
         return (True, None)
