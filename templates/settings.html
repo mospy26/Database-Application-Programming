@@ -1,15 +1,20 @@
 {% include 'top.html' %}
 <div class="wrapper">
 
-
-
         <h1>Settings </h1><hr><br><br>
           <h2>Change User Details :</h2><br>
              <form method="POST" action="{{url_for('editDetails')}}">
+                New Name:<br>
+                <input type="text" name="name" placeholder="Enter new name" /><br><br>
+                New Home Address:<br>
+                <input type="text" name="address" placeholder="Enter new home address" /><br><br>
+                New Date Of Birth:<br>
+                <input type="date" name="dob" placeholder="Enter new date of birth"/><br><br>
                 New password:<br>
                 <input type="text" name="password" placeholder="Enter new password" /><br><br>
                 New Contact Number:<br>
                 <input type="text" name="contact" placeholder="Enter new contact number"/><br><br>
+                
 
                 <button type="submit" name="edit">Submit</button>
             </form>

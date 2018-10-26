@@ -1317,24 +1317,37 @@ def search_model_by_weight(weights, description):
     return None
 
 
-def edit_details(empid,password, contact):
+def edit_details(empid, details):
     conn = database_connect()
     if conn is None:
         return None
     cur = conn.cursor()
     try:
-        if contact is not None:
-            sql = """UPDATE EmployeePhoneNumbers SET phoneNumber =%s WHERE empid =%s"""
-            cur.execute(sql, (contact,empid))
-            conn.commit()
-        if password is not None:
-            sql = """UPDATE Employee SET password = %s WHERE empid = %s"""
-            cur.execute(sql, (password,empid))
-            conn.commit()
+        for d in details.keys():
+            if d == 'name':
+                sql = """UPDATE Employee SET name =%s WHERE empid =%s"""
+                cur.execute(sql, (details[d],empid))  
+            if d == 'addr':
+                sql = """UPDATE Employee SET homeAddress =%s WHERE empid =%s"""
+                cur.execute(sql, (details[d],empid))    
+            if d == 'dob':
+                sql = """UPDATE Employee SET dateOfBirth =%s WHERE empid =%s"""
+                cur.execute(sql, (details[d],empid))
+            if d == 'contact':
+                sql = """UPDATE EmployeePhoneNumbers SET phoneNumber = %s WHERE empid =%s"""
+                cur.execute(sql, (details[d],empid))
+            if d == 'password':
+                sql = """UPDATE Employee SET password = %s WHERE empid = %s"""
+                cur.execute(sql, (details[d],empid))
+                
+        conn.commit()
+        sql = """SELECT password FROM Employee WHERE empid = %s"""
+        cur.execute(sql, (empid,))
+        pwd = cur.fetchone()
+
         cur.close()
         conn.close()
-       
-        return None
+        return check_login(empid, pwd[0])
 
     except Exception as e:
         print("Some error occurred.")

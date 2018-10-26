@@ -492,32 +492,47 @@ def addMustafa():
 @app.route("/editDetails", methods=['GET', 'POST'])
 def editDetails():
     if request.method == 'GET':
-        return render_template('settings.html', page=page)
+        return render_template('settings.html', page=page, session=session)
     elif request.method == 'POST':
+        name = request.form.get('name')
+        addr = request.form.get('address')
+        dob = request.form.get('dob')
         password = request.form.get('password')
         contact = request.form.get('contact')
-        print(password, contact)
-        
-    if len(password) == 0 and len(contact) == 0:
-        return render_template('settings.html', page=page)
-        
-    if len(password) == 0:
-        database.edit_details(user_details['empid'],None,contact)
+ 
+        details = {}  
+        if len(name) > 0:
+            details['name'] = name
+        if len(addr) > 0:
+            details['addr'] = addr 
+        if len(dob) > 0:
+            details['dob'] = dob
+        if len(password) > 0:
+            if len(password) < 8:
+                page['bar'] = False
+                flash('Password lengths must be greater than 7')
+                return render_template('settings.html', page=page, session=session)
+            
+            details['password'] = password    
+        if len(contact) > 0:
+            if len(contact) != 10:
+                page['bar'] = False
+                flash('Phone number must have 10 digits')
+                return render_template('settings.html', page=page, session=session)
+            
+            if not contact.isdigit():
+                page['bar'] = False
+                flash('Phone number must have 10 digits')
+                return render_template('settings.html', page=page, session=session)
+            
+            details['contact'] = contact
+            
+        global user_details
+        user_details = database.edit_details(user_details['empid'], details)
+
         page['bar'] = True
         flash('Details updated sucessfully')
-        return render_template('settings.html', page=page)
-        
-    elif len(contact) == 0:
-        database.edit_details(user_details['empid'],password,None)
-        page['bar'] = True
-        flash('Details updated sucessfully')
-        return render_template('settings.html', page=page)
-    
-    else:
-        database.edit_details(user_details['empid'],password,contact)
-        page['bar'] = True
-        flash('Details updated sucessfully')
-        return render_template('settings.html', page=page)
+        return index()
     
     
     
@@ -530,7 +545,7 @@ def editDetails():
 def search():
     global desc
     if request.method == 'GET':
-        return render_template('search.html')
+        return render_template('search.html', session=session, page=page)
     elif request.method == 'POST':
         description = request.form.get('search')
         desc += description
@@ -539,13 +554,13 @@ def search():
         page['bar'] = False
         flash('No models with that keyword in description found!')
         models = {'models': []}
-    return render_template('tickboxModel.html', models=models, page=page)
+    return render_template('tickboxModel.html', models=models, page=page, session=session)
 
 @app.route("/tickboxModel", methods=['POST', 'GET'])
 def filter():
     global desc
     if request.method == 'GET':
-        return render_template('tickboxModel.html')
+        return render_template('tickboxModel.html', page=page, session=session)
     if request.method == 'POST':
         weights = request.form.getlist('weight')
 
@@ -554,4 +569,4 @@ def filter():
     #    page['bar'] = False
     #    flash('No models with that keyword in description found!')
     #    models = {'models': []}
-    return render_template('models.html', models=models, page=page)
+    return render_template('models.html', models=models, page=page, session=session)
