@@ -51,6 +51,7 @@ def index():
     # Get the departments that the user works in
     works_in = database.employee_works_in(user_details['empid'])
 
+    print(works_in['departments'])
     if works_in is None:
         works_in = {'departments': []}
 
@@ -209,7 +210,7 @@ def device(deviceid):
                            repairs=repairs,
                            session=session,
                            page=page))
-                           
+
 #####################################################
 #   Device Model
 #####################################################
@@ -236,7 +237,7 @@ def devicemodel(deviceid):
                            model_info=model_info,
                            session=session,
                            page=page))
-                           
+
 #####################################################
 #   Repair (Single Repair View)
 #####################################################
@@ -260,7 +261,7 @@ def repair(repairid):
     return render_template('repair.html',
                            repair_info=repair_info,
                            session=session,
-                           page=page)                           
+                           page=page)
 
 ################################################################################
 #                        Manager Section
@@ -340,7 +341,10 @@ def departmentmodels():
                                 page=page)
     else:
         # Show all models from the department
-        department_models = database.get_department_models(session['manager']['departments'][0])
+        department_models = {}
+        department_models['model_allocations'] = []
+        for departments in session['manager']['departments'][0]:
+            department_models['model_allocations'] += database.get_department_models(departments)['model_allocations']
         return render_template('departmentmodels.html',
                                department_models=department_models['model_allocations'],
                                department=session['manager']['departments'][0],
@@ -385,15 +389,22 @@ def issue_device():
         #if len(session['manager']['departments']) == 0:
         #    flash("You are not a manager!")
         #    return redirect(url_for('index'))
-        models = database.get_department_models(session['manager']['departments'][0])
+        models = {'model_allocations': []}
+        for dept in session['manager']['departments'][0]:
+            models['model_allocations'] += database.get_department_models(dept)['model_allocations']
 
-        if models is None:
+        if len(models['model_allocations']) == 0:
             page['bar'] = False
             flash('Error communicating with database')
             models = {'model_allocations': []}
 
         # 3. Get the employees in the department (once chosen)
-        employees = database.get_employees_in_department(session['manager']['departments'][0])
+        employees = {}
+        employees['employees'] = []
+        print(session['manager']['departments'][0])
+        for dept in session['manager']['departments'][0]:
+            employees['employees'] += database.get_employees_in_department(dept)['employees']
+
 
         if employees is None:
             page['bar'] = False
@@ -530,7 +541,7 @@ def revoke_device():
                                 manufacturer=manufacturer,
                                 empid=employee_id,
                                 department=department))
-    
+
 #####################################################
 #   Edit User Details
 #####################################################
@@ -545,12 +556,12 @@ def editDetails():
         dob = request.form.get('dob')
         password = request.form.get('password')
         contact = request.form.get('contact')
- 
-        details = {}  
+
+        details = {}
         if len(name) > 0:
             details['name'] = name
         if len(addr) > 0:
-            details['addr'] = addr 
+            details['addr'] = addr
         if len(dob) > 0:
             details['dob'] = dob
         if len(password) > 0:
@@ -558,30 +569,30 @@ def editDetails():
                 page['bar'] = False
                 flash('Password lengths must be greater than 7')
                 return render_template('settings.html', page=page, session=session)
-            
-            details['password'] = password    
+
+            details['password'] = password
         if len(contact) > 0:
             if len(contact) != 10:
                 page['bar'] = False
                 flash('Phone number must have 10 digits')
                 return render_template('settings.html', page=page, session=session)
-            
+
             if not contact.isdigit():
                 page['bar'] = False
                 flash('Phone number must have 10 digits')
                 return render_template('settings.html', page=page, session=session)
-            
+
             details['contact'] = contact
-            
+
         global user_details
         user_details = database.edit_details(user_details['empid'], details)
 
         page['bar'] = True
         flash('Details updated sucessfully')
         return index()
-    
-    
-    
+
+
+
 #####################################################
 #   Search description for model
 #####################################################

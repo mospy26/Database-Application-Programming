@@ -19,8 +19,10 @@
             <tr>
                 <td> Departments </td>
                 <td>
-                {% for dept in works_in['departments'] %}
-                    {{ dept }}
+                {% for depts in works_in['departments'] %}
+                 {% for dept in depts %}
+                    {{ dept }},&nbsp
+                  {% endfor %}
                 {% endfor %}
                 </td>
             </tr>
@@ -32,7 +34,9 @@
 
         <h3>Manager of:
         {% for row in manager_of['departments'] %}
-            {{row}},&nbsp
+         {% for dept in row %}
+            {{dept}},&nbsp
+         {% endfor %}
         {% endfor %}
         {% endif %}
         </h3>

@@ -178,7 +178,7 @@ def is_manager(employee_id):
         sql = """SELECT name FROM Department
         WHERE manager = %s;"""
         cur.execute(sql, (employee_id,))
-        r = cur.fetchone()
+        r = cur.fetchall()
         cur.close()
         conn.close()
         manager_of = r
@@ -277,8 +277,8 @@ def employee_works_in(employee_id):
     # Return a list of departments
 
     # ----------------- Changes from new skeleton code v3 -----------------
-    departments = ['IT', 'Marketing']
-    return departments
+    #departments = ['IT', 'Marketing']
+    #return departments
     # ------------------------------------------------------------------------------------
 
     conn = database_connect()
@@ -287,7 +287,7 @@ def employee_works_in(employee_id):
 
     cur = conn.cursor()
     try:
-        sql = """SELECT * FROM EmployeeDepartments
+        sql = """SELECT department FROM EmployeeDepartments
 	              WHERE empID = %s"""
         cur.execute(sql, (employee_id,))
         r = cur.fetchall()
@@ -1187,7 +1187,7 @@ def issue_device_to_employee(employee_id, device_id):
         r = cur.fetchone()
         if r is None:
             return (False, "Device already issued")
-            
+
         sql = """UPDATE Device SET issuedTo = %s WHERE deviceID = %s"""
         cur.execute(sql, (employee_id, device_id))
         conn.commit()
@@ -1323,10 +1323,10 @@ def edit_details(empid, details):
         for d in details.keys():
             if d == 'name':
                 sql = """UPDATE Employee SET name =%s WHERE empid =%s"""
-                cur.execute(sql, (details[d],empid))  
+                cur.execute(sql, (details[d],empid))
             if d == 'addr':
                 sql = """UPDATE Employee SET homeAddress =%s WHERE empid =%s"""
-                cur.execute(sql, (details[d],empid))    
+                cur.execute(sql, (details[d],empid))
             if d == 'dob':
                 sql = """UPDATE Employee SET dateOfBirth =%s WHERE empid =%s"""
                 cur.execute(sql, (details[d],empid))
@@ -1336,7 +1336,7 @@ def edit_details(empid, details):
             if d == 'password':
                 sql = """UPDATE Employee SET password = %s WHERE empid = %s"""
                 cur.execute(sql, (details[d],empid))
-                
+
         conn.commit()
         sql = """SELECT password FROM Employee WHERE empid = %s"""
         cur.execute(sql, (empid,))
@@ -1352,13 +1352,6 @@ def edit_details(empid, details):
     cur.close()
     conn.close()
     return None
-
-
-
-
-
-
-
 
 # =================================================================
 # =================================================================
