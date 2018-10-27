@@ -277,8 +277,8 @@ def employee_works_in(employee_id):
     # Return a list of departments
 
     # ----------------- Changes from new skeleton code v3 -----------------
-    departments = ['IT', 'Marketing']
-    return departments
+    #departments = ['IT', 'Marketing']
+    #return departments
     # ------------------------------------------------------------------------------------
 
     conn = database_connect()
@@ -287,7 +287,7 @@ def employee_works_in(employee_id):
 
     cur = conn.cursor()
     try:
-        sql = """SELECT * FROM EmployeeDepartments
+        sql = """SELECT department FROM EmployeeDepartments
 	              WHERE empID = %s"""
         cur.execute(sql, (employee_id,))
         r = cur.fetchall()
@@ -1258,7 +1258,8 @@ def search_model(description):
     cur = conn.cursor()
     try:
         description = "%" + description + "%"
-        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE description LIKE %s ORDER BY manufacturer"""
+        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE 
+                upper(description) LIKE upper(%s) ORDER BY manufacturer"""
         cur.execute(sql, (description, ))
         r = cur.fetchall()
         #if len(r) == 0:
@@ -1290,7 +1291,7 @@ def search_model_by_weight(weights, description):
         description = "%" + description + "%"
         for weight in weights:
             sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE
-            weight BETWEEN %s and %s AND description LIKE %s ORDER BY manufacturer"""
+            weight BETWEEN %s and %s AND upper(description) LIKE upper(%s) ORDER BY manufacturer"""
             if weight == 0:
                 range = 20
             else:

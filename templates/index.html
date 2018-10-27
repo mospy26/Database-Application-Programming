@@ -20,7 +20,7 @@
                 <td> Departments </td>
                 <td>
                 {% for dept in works_in['departments'] %}
-                    {{ dept }}
+                    {{ dept[0] }},
                 {% endfor %}
                 </td>
             </tr>
