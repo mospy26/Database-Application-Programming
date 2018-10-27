@@ -44,27 +44,32 @@ a:hover {
 .clear {
     clear: both;
 }
+
 .wrapper{
       margin: auto;
       border:1px solid #000;
-      display:inline-block;
+      display:block;
+      text-align:center;
+      padding-bottom: 15px;
 }
 
 input,
 button {
   background-color:transparent;
   border:0;
+  text-align: center;
 }
 
 button {
-  display:block;
   right:0;
   top:0;
+  text-align: center;
 }
 
 input {
   padding-right:30px; /* button padding */
 }
+
 h1.title {
   font-size: 40px;
   font-weight: 300;

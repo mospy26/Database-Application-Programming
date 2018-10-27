@@ -605,7 +605,7 @@ def search():
         return render_template('search.html', session=session, page=page)
     elif request.method == 'POST':
         description = request.form.get('search')
-        desc += description
+        desc = description
         models = database.search_model(description)
     if len(models['models']) == 0:
         page['bar'] = False
@@ -626,4 +626,4 @@ def filter():
     #    page['bar'] = False
     #    flash('No models with that keyword in description found!')
     #    models = {'models': []}
-    return render_template('models.html', models=models, page=page, session=session)
+        return render_template('models.html', models=models, page=page, session=session)
