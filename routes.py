@@ -611,6 +611,7 @@ def search():
         page['bar'] = False
         flash('No models with that keyword in description found!')
         models = {'models': []}
+        return render_template('search.html', page=page, session=session)
     return render_template('tickboxModel.html', models=models, page=page, session=session)
 
 @app.route("/tickboxModel", methods=['POST', 'GET'])
