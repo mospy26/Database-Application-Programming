@@ -182,7 +182,7 @@ def is_manager(employee_id):
         cur.close()
         conn.close()
         manager_of = r
-        if r is None:
+        if len(r) == 0:
             return None
         tuples = {
             'departments': manager_of
