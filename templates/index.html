@@ -19,11 +19,12 @@
             <tr>
                 <td> Departments </td>
                 <td>
-                 
-                {% for depts in works_in['departments'] %}
-                 {% for dept in depts %}
-                    {{ dept }},&nbsp
-                  {% endfor %}
+                {% for i in range(works_in['departments']|length) %}
+                  {% if i != works_in['departments']|length - 1 %}
+                   {{ works_in['departments'][i][0] }},&nbsp
+                  {% else %}
+                    {{ works_in['departments'][i][0] }}
+                  {% endif %}
                 {% endfor %}
                 </td>
             </tr>
@@ -34,10 +35,12 @@
         <hr>
 
         <h3>Manager of:
-        {% for row in manager_of['departments'] %}
-         {% for dept in row %}
-            {{dept}},&nbsp
-         {% endfor %}
+        {% for i in range(manager_of['departments']|length) %}
+         {% if i != manager_of['departments']|length - 1 %}
+            {{manager_of['departments'][i][0]}},&nbsp
+          {% else %}
+            {{manager_of['departments'][i][0]}}
+          {% endif %}
         {% endfor %}
         {% endif %}
         </h3>
