@@ -2,7 +2,15 @@
 <div class="content">
     <div class="container">
         <h1 class="title">Employee ID: {{empid}}</h1>
-        <h2>Department: {{department[0]}}</h2>
+        <h2>Department:
+         {% for i in range(department|length) %}
+          {% if i != department|length - 1 %}
+           {{department[i]}},&nbsp
+          {% else %}
+           {{department[i]}}
+          {% endif %}
+         {% endfor %}
+        </h2>
         <h2>Model: {{model}}</h2>
         <h2>Manufacturer: {{manufacturer}}</h2>
         <table class="styled">
