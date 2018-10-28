@@ -294,7 +294,7 @@ def departmentmodels():
 
     # Check if user is manager
     if session['manager'] is None:
-            return redirect(url_for('index'))
+        return redirect(url_for('index'))
 
     # Get any URL arguments
     model = request.args.get('model', '')
@@ -347,7 +347,7 @@ def departmentmodels():
             department_models['model_allocations'] += database.get_department_models(departments)['model_allocations']
         return render_template('departmentmodels.html',
                                department_models=department_models['model_allocations'],
-                               department=session['manager']['departments'][0],
+                               department="".join(list(map(lambda x: str(repr(x)[2:-2])+", ", session['manager']['departments'][:-1]))) + str(session['manager']['departments'][-1][0]),
                                session=session,
                                page=page)
 
