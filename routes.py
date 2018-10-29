@@ -633,7 +633,7 @@ def filter():
         return render_template('models.html', models=models, page=page, session=session)
 
 @app.route("/zeromodels")
-def no_models():
+def no_used_devices():
     if('logged_in' not in session or not session['logged_in']):
         return redirect(url_for('login'))
     employee_list = database.no_models(user_details['empid'])
