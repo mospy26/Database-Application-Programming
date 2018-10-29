@@ -1,0 +1,25 @@
+{% include 'top.html' %}
+<div class="content">
+    <div class="container">
+        <h1 class="title">Employees in your department with no used devices</h1>
+        <table class = "styled">
+         <thead>
+             <tr>
+                 <th>Employee ID</th>
+                 <th>Name</th>
+                 <th>Home Address</th>
+             </tr>
+         </thead>
+         <tbody>
+             {% for employee in employees %}
+                 <tr>
+                     <td>{{ employee[0] }}</td>
+                     <td>{{ employee[1] }}</td>
+                     <td>{{ employee[2] }}</td>
+                 </tr>
+             {% endfor %}
+         </tbody>
+        </table>
+    </div>
+</div>
+{% include 'bottom.html' %}

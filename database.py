@@ -1258,7 +1258,7 @@ def search_model(description):
     cur = conn.cursor()
     try:
         description = "%" + description + "%"
-        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE 
+        sql = """SELECT manufacturer, description, modelNumber, Weight FROM Model WHERE
                 upper(description) LIKE upper(%s) ORDER BY manufacturer"""
         cur.execute(sql, (description, ))
         r = cur.fetchall()
@@ -1352,6 +1352,33 @@ def edit_details(empid, details):
     except Exception as e:
         print("Some error occurred.")
         print(str(e))
+    cur.close()
+    conn.close()
+    return None
+
+def no_models(manager_id):
+    conn = database_connect()
+    if conn is None:
+        return None
+    cur = conn.cursor()
+    try:
+        sql = """SELECT empID, E.name, homeAddress FROM
+            Employee E JOIN EmployeeDepartments USING(empID)
+                    JOIN Department ON(Department.name = department)
+                    WHERE manager = %s and EXISTS (SELECT E1.empid, COALESCE(COUNT(DeviceID), 0) AS no_of_devices
+														FROM Employee E1 LEFT OUTER JOIN DeviceUsedBy USING(empid)
+													  WHERE E.empid = E1.empid
+														GROUP BY empid
+														HAVING COUNT(DeviceID) = 0);"""
+        cur.execute(sql, (manager_id,))
+        r = cur.fetchall()
+        cur.close()
+        conn.close()
+        tuples = {'employees': r}
+        return tuples
+    except Exception as e:
+        print("Some error occured.")
+        print(e)
     cur.close()
     conn.close()
     return None
