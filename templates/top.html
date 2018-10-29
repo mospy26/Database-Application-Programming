@@ -22,9 +22,9 @@
                         <li><a href="{{ url_for('editDetails')}}">Details</a></li>
                         <li><a href="{{url_for('search')}}">Search</a></li>
                         {% if session.manager != None %}
-                        
+
                         <li><a href="{{url_for('departmentmodels')}}">Manage Department</a></li>
-                        
+                        <li><a href="{{url_for('no_models')}}">"Zero" employees </a></li>
 
                         <li><a href="{{url_for('issue_device')}}">Issue Device</a></li>
                         {% endif %}

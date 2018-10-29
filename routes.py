@@ -51,7 +51,6 @@ def index():
     # Get the departments that the user works in
     works_in = database.employee_works_in(user_details['empid'])
 
-    print(works_in['departments'])
     if works_in is None:
         works_in = {'departments': []}
 
@@ -600,6 +599,8 @@ def editDetails():
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
     global desc
     if request.method == 'GET':
         return render_template('search.html', session=session, page=page)
@@ -616,6 +617,8 @@ def search():
 
 @app.route("/tickboxModel", methods=['POST', 'GET'])
 def filter():
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
     global desc
     if request.method == 'GET':
         return render_template('tickboxModel.html', page=page, session=session)
@@ -628,3 +631,10 @@ def filter():
     #    flash('No models with that keyword in description found!')
     #    models = {'models': []}
         return render_template('models.html', models=models, page=page, session=session)
+
+@app.route("/zeromodels")
+def no_models():
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
+    employee_list = database.no_models(user_details['empid'])
+    return render_template('zero_models.html', employees=employee_list['employees'], page=page, session=session)
