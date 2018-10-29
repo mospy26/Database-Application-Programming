@@ -548,6 +548,8 @@ def revoke_device():
 
 @app.route("/editDetails", methods=['GET', 'POST'])
 def editDetails():
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
     if request.method == 'GET':
         return render_template('settings.html', page=page, session=session)
     elif request.method == 'POST':
@@ -600,6 +602,8 @@ def editDetails():
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
     global desc
     if request.method == 'GET':
         return render_template('search.html', session=session, page=page)
@@ -616,6 +620,8 @@ def search():
 
 @app.route("/tickboxModel", methods=['POST', 'GET'])
 def filter():
+    if('logged_in' not in session or not session['logged_in']):
+        return redirect(url_for('login'))
     global desc
     if request.method == 'GET':
         return render_template('tickboxModel.html', page=page, session=session)
