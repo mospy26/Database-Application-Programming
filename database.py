@@ -1362,11 +1362,12 @@ def no_models(manager_id):
         return None
     cur = conn.cursor()
     try:
-        sql = """SELECT empID, Employee.name, homeAddress FROM
-            Employee JOIN EmployeeDepartments USING(empID)
+        sql = """SELECT empID, E.name, homeAddress FROM
+            Employee E JOIN EmployeeDepartments USING(empID)
                     JOIN Department ON(Department.name = department)
-                    WHERE manager = %s and EXISTS (SELECT empid, COALESCE(COUNT(DeviceID), 0) AS no_of_devices
-														FROM Employee LEFT OUTER JOIN DeviceUsedBy USING(empid)
+                    WHERE manager = %s and EXISTS (SELECT E1.empid, COALESCE(COUNT(DeviceID), 0) AS no_of_devices
+														FROM Employee E1 LEFT OUTER JOIN DeviceUsedBy USING(empid)
+													  WHERE E.empid = E1.empid
 														GROUP BY empid
 														HAVING COUNT(DeviceID) = 0);"""
         cur.execute(sql, (manager_id,))
