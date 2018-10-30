@@ -632,8 +632,8 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
         sql = """SELECT
 	                   deviceID,
 	                   CASE
-                            WHEN issuedTo = %s THEN 'True'
-                            ELSE 'False'
+                            WHEN issuedTo = %s THEN True
+                            ELSE False
                             END as issuedTo
                     FROM (Device
 		                  Inner join Employee on(empid = issuedto))
