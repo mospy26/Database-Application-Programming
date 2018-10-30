@@ -90,31 +90,6 @@ def check_login(employee_id, password):
 	# This is ok for a toy assignment, but do not use this code as a model when you are
 	# writing a real system for a client or yourself.
 
-    # TODO
-    # Check if the user details are correct!
-    # Return the relevant information (watch the order!)
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # # TODO Dummy data - change rows to be useful!
-    # # NOTE: Make sure you take care of ORDER!!!
-    #
-    # employee_info = [
-    #     1337,                       # empid
-    #     'Porter Tato Head',         # name
-    #     '123 Fake Street',          # homeAddress
-    #     datetime.date(1970, 1, 1),  # dateOfBirth
-    # ]
-    #
-    # user = {
-    #     'empid': employee_info[0],
-    #     'name': employee_info[1],
-    #     'homeAddress': employee_info[2],
-    #     'dateOfBirth': employee_info[3],
-    # }
-    #
-    # return user
-    # -------------------------------------------------------------------------------------
-
     conn = database_connect()
     if conn is None:
         return None
@@ -159,14 +134,6 @@ def is_manager(employee_id):
      Get the department the employee is a manager of, if any.
     # Returns None if the employee doesn't manage a department.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return a list of departments
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # manager_of = 'RND'
-    # return manager_of
-    # -------------------------------------------------------------------------------------
 
     conn = database_connect()
     if conn is None:
@@ -216,21 +183,6 @@ def get_devices_used_by(employee_id):
     Get a list of all the devices used by the employee.
     """
 
-    # TODO Dummy Data - Change to be useful!
-    # Return a list of devices issued to the user!
-    # Each "Row" contains [ deviceID, manufacturer, modelNumber]
-    # If no devices = empty list []
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # devices = [
-    #     [7, 'Zava', '1146805551'],
-    #     [13, 'Skyndu', '5296853075'],
-    #     [24, 'Yakitri', '8406089423'],
-    # ]
-    #
-    # return devices
-    # -------------------------------------------------------------------------------------
-
     conn = database_connect()
     if conn is None:
         return None
@@ -273,14 +225,6 @@ def employee_works_in(employee_id):
     Return the departments that the employee works in.
     """
 
-    # TODO Dummy Data - Change to be useful!
-    # Return a list of departments
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    #departments = ['IT', 'Marketing']
-    #return departments
-    # ------------------------------------------------------------------------------------
-
     conn = database_connect()
     if conn is None:
         return None
@@ -319,28 +263,6 @@ def get_issued_devices_for_user(employee_id):
         - Return a list of all devices to the user.
     """
 
-    # TODO Dummy Data - Change to be useful!
-    # Return a list of devices issued to the user!
-    # Each "Row" contains [ deviceID, purchaseDate, modelNumber, manufacturer ]
-    # Each "Row" contains [ deviceID, purchaseDate, manufacturer, modelNumber ]
-    # If no devices = empty list []
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # devices = [
-    #     [7, datetime.date(2017, 8, 28), 'Zava', '1146805551'],
-    #     [8, datetime.date(2017, 9, 22), 'Topicware', '5798231046'],
-    #     [6123, datetime.date(2017, 9, 5), 'Dabshots', '6481799600'],
-    #     [1373, datetime.date(2018, 4, 19), 'Cogibox', '6700815444'],
-    #     [8, datetime.date(2018, 2, 10), 'Feednation', '2050267274'],
-    #     [36, datetime.date(2017, 11, 5), 'Muxo', '8768929463'],
-    #     [17, datetime.date(2018, 1, 14), 'Izio', '5886976558'],
-    #     [13, datetime.date(2017, 9, 8), 'Skyndu', '5296853075'],
-    #     [24, datetime.date(2017, 10, 22), 'Yakitri', '8406089423'],
-    # ]
-    #
-    # return devices
-    # ------------------------------------------------------------------------------------
-
     conn = database_connect()
     if conn is None:
         return None
@@ -364,27 +286,6 @@ def get_issued_devices_for_user(employee_id):
     conn.close()
     return []
 
-
-
-    # devices = [
-    #     [7, '2017-08-28', 'Zava', '1146805551'],
-    #     [8, '2017-09-22', 'Topicware', '5798231046'],
-    #     [6123, '2017-09-05', 'Dabshots', '6481799600'],
-    #     [1373, '2018-04-19', 'Cogibox', '6700815444'],
-    #     [8, '2018-02-10', 'Feednation', '2050267274'],
-    #     [36, '2017-11-05', 'Muxo', '8768929463'],
-    #     [17, '2018-01-14', 'Izio', '5886976558'],
-    #     [13, '2017-09-08', 'Skyndu', '5296853075'],
-    #     [24, '2017-10-22', 'Yakitri', '8406089423'],
-    # ]
-    #
-    # tuples = {
-    #     'device_list': devices
-    # }
-    #
-    # return tuples
-
-
 #####################################################
 #   Get All Devices
 #####################################################
@@ -393,11 +294,6 @@ def get_all_devices():
     """
     Get all devices available including the model information.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return a list of devices issued to the user!
-    # Each "Row" contains [ deviceID, purchaseDate, modelNumber, manufacturer ]
-    # If no devices = empty list []
 
     conn = database_connect()
     if conn is None:
@@ -424,25 +320,6 @@ def get_all_devices():
     return []
 
 
-    # devices = [
-    #     [7, '2017-08-28', 'Zava', '1146805551'],
-    #     [8, '2017-09-22', 'Topicware', '5798231046'],
-    #     [6123, '2017-09-05', 'Dabshots', '6481799600'],
-    #     [1373, '2018-04-19', 'Cogibox', '6700815444'],
-    #     [8, '2018-02-10', 'Feednation', '2050267274'],
-    #     [36, '2017-11-05', 'Muxo', '8768929463'],
-    #     [17, '2018-01-14', 'Izio', '5886976558'],
-    #     [13, '2017-09-08', 'Skyndu', '5296853075'],
-    #     [24, '2017-10-22', 'Yakitri', '8406089423'],
-    # ]
-    #
-    # tuples = {
-    #     'device_list': devices
-    # }
-
-    return tuples
-
-
 #####################################################
 #   Query (b)
 #   Get All Models
@@ -452,11 +329,6 @@ def get_all_models():
     """
     Get all models available.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return the list of models with information from the model table.
-    # Each "Row" contains: [manufacturer, description, modelnumber, weight]
-    # If No Models = EMPTY LIST []
 
     conn = database_connect()
     if conn is None:
@@ -483,44 +355,6 @@ def get_all_models():
     conn.close()
     return []
 
-    models = [
-        ['Feednation', 'Expanded didactic instruction set', '2050267274', 31],
-        ['Zoombox', 'Profit-focused global extranet', '8860068207', 57],
-        ['Shufflebeat', 'Robust clear-thinking functionalities', '0288809602', 23],
-        ['Voonyx', 'Vision-oriented bandwidth-monitored instruction set', '5275001460', 82],
-        ['Tagpad', 'Fundamental human-resource migration', '3772470904', 89],
-        ['Wordpedia', 'Business-focused tertiary orchestration', '0211912271', 17],
-        ['Skyndu', 'Quality-focused web-enabled parallelism', '5296853075', 93],
-        ['Tazz', 'Re-engineered well-modulated contingency', '8479884797', 95],
-        ['Dabshots', 'Centralized empowering protocol', '6481799600', 68],
-        ['Rhybox', 'Re-contextualized bifurcated orchestration', '7107712551', 25],
-        ['Cogibox', 'Networked disintermediate application', '6700815444', 27],
-        ['Meedoo', 'Progressive 24-7 orchestration', '3998544224', 43],
-        ['Zoomzone', 'Reverse-engineered systemic monitoring', '9854941272', 50],
-        ['Meejo', 'Secured static implementation', '3488947459', 75],
-        ['Topicware', 'Extended system-worthy forecast', '5798231046', 100],
-        ['Izio', 'Open-source static productivity', '5886976558', 53],
-        ['Zava', 'Polarised incremental paradigm', '1146805551', 82],
-        ['Demizz', 'Reduced hybrid website', '9510770736', 63],
-        ['Muxo', 'Switchable contextually-based throughput', '8768929463', 40],
-        ['Wordify', 'Front-line fault-tolerant middleware', '8465785368', 84],
-        ['Twinder', 'Intuitive contextually-based local area network', '5709369365', 78],
-        ['Jatri', 'Horizontal disintermediate workforce', '8271780565', 31],
-        ['Chatterbridge', 'Phased zero tolerance architecture', '8429506128', 39],
-    ]
-
-    tuples = {
-        'models': models
-    }
-
-    return tuples
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # return models
-    # ----------------- -------------------------------------------------------------------
-
-
-
 #####################################################
 #   Query (d[ii])
 #   Get Device Repairs
@@ -530,17 +364,6 @@ def get_device_repairs(device_id):
     """
     Get all repairs made to a device.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return the repairs done to a certain device
-    # Each "Row" contains:
-    #       - repairid
-    #       - faultreport
-    #       - startdate
-    #       - enddate
-    #       - cost
-    #       - servicename (of who did the repair)
-    # If no repairs = empty list
 
     conn = database_connect()
     if conn is None:
@@ -566,39 +389,6 @@ def get_device_repairs(device_id):
     conn.close()
     return []
 
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # repairs = [
-    #     [17, 'Never, The', datetime.date(2018, 7, 16), datetime.date(2018, 9, 22), '$837.13'],
-    #     [18, 'Gonna', datetime.date(2018, 8, 3), datetime.date(2018, 9, 22), '$1726.99'],
-    #     [19, 'Give', datetime.date(2018, 9, 4), datetime.date(2018, 9, 17), '$1751.01'],
-    #     [20, 'You', datetime.date(2018, 7, 21), datetime.date(2018, 9, 23), '$1496.36'],
-    #     [21, 'Up', datetime.date(2018, 8, 17), datetime.date(2018, 9, 18), '$1133.88'],
-    #     [22, 'Never', datetime.date(2018, 8, 8), datetime.date(2018, 9, 24), '$1520.95'],
-    #     [23, 'Gonna', datetime.date(2018, 9, 1), datetime.date(2018, 9, 29), '$611.09'],
-    #     [24, 'Let', datetime.date(2018, 7, 5), datetime.date(2018, 9, 15), '$1736.03'],
-    # ]
-    #
-    # return repairs
-    # ----------------- -------------------------------------------------------------------
-
-    repairs = [
-        [17, 'Never, The', '2018-07-16', '2018-09-22', '$837.13', 'TopDrive'],
-        [18, 'Gonna', '2018-08-03', '2018-09-22', '$1726.99', 'Pikachu'],
-        [19, 'Give', '2018-09-04', '2018-09-17', '$1751.01', 'INeedSleep'],
-        [20, 'You', '2018-07-21', '2018-09-23', '$1496.36', 'PleaseHelp'],
-        [21, 'Up', '2018-08-17', '2018-09-18', '$1133.88', 'IseeTheSun'],
-        [22, 'Never', '2018-08-08', '2018-09-24', '$1520.95', 'BabySharkdooodoodooo'],
-        [23, 'Gonna', '2018-09-01', '2018-09-29', '$611.09', 'McNuggies'],
-        [24, 'Let', '2018-07-05', '2018-09-15', '$1736.03', 'ImaFirinMahLazor'],
-    ]
-
-    tuples = {
-        'repairs': repairs
-    }
-
-    return tuples
-
-
 #####################################################
 #   Query (d[i]) + (d[iii/iv])
 #   Get Device Info
@@ -608,9 +398,6 @@ def get_device_information(device_id):
     """
     Get related device information in detail.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return all the relevant device information for the device
 
     conn = database_connect()
     if conn is None:
@@ -642,37 +429,6 @@ def get_device_information(device_id):
     cur.close()
     conn.close()
     return None
-    device_info = [
-        1,                      # DeviceID
-        '2721153188',           # SerialNumber
-        '2017-12-19',           # PurchaseDate
-        # datetime.date(2017, 12, 19),  # PurchaseDate
-        '$1009.10',             # PurchaseCost
-        'Zoomzone',             # Manufacturer
-        '9854941272',           # ModelNumber
-        # 1337,                   # IssuedTo
-        # Removed Description and weight
-        'what battery?',        # Description
-        256,                    # Weight
-    ]
-
-    # devices = {
-    tuples = {
-        'device_id': device_info[0],
-        'serial_number': device_info[1],
-        'purchase_date': device_info[2],
-        'purchase_cost': device_info[3],
-        'manufacturer': device_info[4],
-        'model_number': device_info[5],
-        # 'issued_to': device_info[6],          #Removed description and weight
-
-        'description': device_info[6],
-        'weight': device_info[7],
-    }
-
-    return tuples
-# -----------------------------------------------------------------------------------------------------------------------------------
-# NEW FUNCTIONS FROM SKELETON CODE
 
 #####################################################
 #   Query (d[iii/iv])
@@ -716,22 +472,6 @@ def get_device_model(device_id):
     cur.close()
     conn.close()
     return None
-
-     # model_info = [
-     #     'Zoomzone',              # manufacturer
-     #     '9854941272',            # modelNumber
-     #     'brick--I mean laptop',  # description
-     #     2000,                    # weight
-     # ]
-     #
-     # model = {
-     #     'manufacturer': model_info[0],
-     #     'model_number': model_info[1],
-     #     'description': model_info[2],
-     #     'weight': model_info[3],
-     # }
-     # return model
-
 
 #####################################################
 #   Query (e)
@@ -778,19 +518,6 @@ def get_repair_details(repair_id):
     conn.close()
     return None
 
-    repair_info = [
-        17,                    # repair ID
-        'Never, The',          # fault report
-        datetime.date(2018, 7, 16),  # start date
-        datetime.date(2018, 9, 22),  # end date
-        '$837.13',             # cost
-        '12345678901',         # service ABN
-        'TopDrive',            # service name
-        'repair@example.com',  # service email
-        1,                     # done to device
-    ]
-
-
 # ------------------------------------------------------------------------------------------------------------------------------------
 
 #####################################################
@@ -802,10 +529,6 @@ def get_department_models(department_name):
     """
     Return all models assigned to a department.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return the models allocated to the department.
-    # Each "row" has: [ manufacturer, modelnumber, maxnumber ]
 
     conn = database_connect()
     if conn is None:
@@ -831,24 +554,6 @@ def get_department_models(department_name):
     cur.close()
     conn.close()
     return None
-
-    model_allocations = [
-        ['Devpulse', '4030141218', 153],
-        ['Gabcube', '1666158895', 186],
-        ['Feednation', '2050267274', 275],
-        ['Zoombox', '8860068207', 199],
-        ['Shufflebeat', '0288809602', 208],
-        ['Voonyx', '5275001460', 264],
-        ['Tagpad', '3772470904', 227],
-    ]
-
-    tuples = {
-        'model_allocations': model_allocations
-    }
-
-    return tuples
-    # return model_allocations
-
 
 #####################################################
 #   Query (f[iii])
@@ -898,26 +603,6 @@ def get_employee_department_model_device(department_name, manufacturer, model_nu
     conn.close()
     return None
 
-
-    # TODO Dummy Data - Change to be useful!
-    # Return the number of devices owned by each employee matching department,
-    #   manufacturer and model.
-    # Each "row" has: [ empid, name, number of devices issued that match ]
-
-    employee_counts = [
-        [1337, 'Misty', 20],
-        [351, 'Pikachu', 1],
-        [919, 'Hermione', 8],
-    ]
-
-    tuples = {
-        'employee_counts': employee_counts
-    }
-
-    return tuples
-    # return employee_counts
-
-
 #####################################################
 #   Query (f[iv])
 #   Get a list of devices for a certain model and
@@ -937,12 +622,6 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
         - [8765, False]
     """
 
-    # TODO Dummy Data - Change to be useful!
-    # Return each device of this model and whether the employee has it
-    # issued.
-    # Each "row" has: [ device_id, True if issued, else False.]
-
-    # ------------------------------------------ Feedback please. Not sure ------------------------------------------
     conn = database_connect()
     if conn is None:
         return None
@@ -981,22 +660,6 @@ def get_model_device_assigned(model_number, manufacturer, employee_id):
     conn.close()
     return None
 
-
-    device_assigned = [
-        [123656, False],
-        [123132, True],
-        [51413, True],
-        [8765, False],
-    ]
-
-    tuples = {
-        'device_assigned': device_assigned,
-    }
-
-    return tuples
-    # return device_assigned
-
-
 #####################################################
 #   Query (f[iv])
 #   Get a list of devices for this model and
@@ -1008,9 +671,6 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
     Get all unassigned devices for the model.
     """
 
-    # TODO Dummy Data - Change to be useful!
-    # Return each device of this model that has not been issued
-    # Each "row" has: [ device_id ]
     conn = database_connect()
     if conn is None:
         return None
@@ -1033,10 +693,6 @@ def get_unassigned_devices_for_model(model_number, manufacturer):
     return None
     device_unissued = [123656, 123132, 51413, 8765]
 
-
-    # return device_unissued
-
-
 #####################################################
 #   Query (f[iv])
 #   Get Employees in Department
@@ -1047,21 +703,6 @@ def get_employees_in_department(department_name):
     Return the name of all employees in the department.
     """
 
-    # TODO Dummy Data - Change to be useful!
-    # Return the employees in the department.
-    # Each "row" has: [ empid, name ]
-
-    # ----------------- Changes from new skeleton code v3 -----------------
-    # employees = [
-    #     [15905, 'Rea Fibbings'],
-    #     [9438, 'Julia Norville'],
-    #     [36020, 'Adora Lansdowne'],
-    #     [98809, 'Nathanial Farfoot'],
-    #     [58407, 'Lynne Smorthit'],
-    # ]
-    #
-    # return employees
-    # ----------------- -------------------------------------------------------------------
     conn = database_connect()
     if conn is None:
         return None
@@ -1083,16 +724,6 @@ def get_employees_in_department(department_name):
     cur.close()
     conn.close()
     return None
-    employees = [
-        ['15905', 'Rea Fibbings'],
-        ['09438', 'Julia Norville'],
-        ['36020', 'Adora Lansdowne'],
-        ['98809', 'Nathanial Farfoot'],
-        ['58407', 'Lynne Smorthit'],
-    ]
-
-
-
 
 #####################################################
 #   Query (f[iv])
@@ -1104,11 +735,6 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
     Return the list of devices and who owns them for a given model
     and department.
     """
-
-    # TODO Dummy Data - Change to be useful!
-    # Return the devices matching the manufacturer and model number in the
-    #   department with the employees assigned.
-    # Each row has: [ deviceid, serialnumber, empid, employee name ]
 
     conn  = database_connect()
     if conn is None:
@@ -1132,32 +758,6 @@ def get_device_employee_department(manufacturer, modelNumber, department_name):
     cur.close()
     conn.close()
     return None
-    # ----------------- Changes from new skeleton code v3 -----------------
-    device_employee = [
-        [16, '5952579566', 71800, 'Bond James'],
-        [17, '8357570070', 17804, 'Spongebob'],
-        [18, '8019230513', 73946, 'Chez Grater'],
-        [19, '5816272977', 81716, 'Totoro'],
-        [20, '3768555569', 37387, 'Doraemon'],
-        [21, '3079176995', 52675, 'Fred Weasley'],
-        [22, '3804476813', 36020, 'George Weasley'],
-    ]
-
-    return device_employee
-    # ----------------- -------------------------------------------------------------------
-
-    device_employee = [
-        [16, '5952579566', '71800', 'Bond James'],
-        [17, '8357570070', '17804', 'Spongebob'],
-        [18, '8019230513', '73946', 'Chez Grater'],
-        [19, '5816272977', '81716', 'Totoro'],
-        [20, '3768555569', '37387', 'Doraemon'],
-        [21, '3079176995', '52675', 'Fred Weasley'],
-        [22, '3804476813', '36020', 'George Weasley'],
-    ]
-
-
-
 
 #####################################################
 #   Query (f[v])
@@ -1169,14 +769,6 @@ def issue_device_to_employee(employee_id, device_id):
     Issue the device to the chosen employee.
     """
 
-    # TODO issue the device from the employee
-    # Return (True, None) if all good
-    # Else return (False, ErrorMsg)
-    # Error messages:
-    #       - Device already issued?
-    #       - Employee not in department?
-
-    # return (False, "Device already issued")
     conn = database_connect()
     if conn is None:
         return (False, None)
@@ -1212,14 +804,6 @@ def revoke_device_from_employee(employee_id, device_id):
     Revoke the device from the employee.
     """
 
-    # TODO revoke the device from the employee.
-    # Return (True, None) if all good
-    # Else return (False, ErrorMsg)
-    # Error messages:
-    #       - Device already revoked?
-    #       - employee not assigned to device?
-
-    # return (False, "Device already unassigned")
     conn = database_connect()
     if conn is None:
         return (False, None)
@@ -1250,6 +834,9 @@ def revoke_device_from_employee(employee_id, device_id):
         conn.close()
         return (False, None)
 
+#####################################################
+#   Search model based on keyword in descrption.
+#####################################################
 def search_model(description):
     conn = database_connect()
     if conn is None:
@@ -1280,6 +867,9 @@ def search_model(description):
     conn.close()
     return None
 
+#####################################################
+#   Filter models based on weight after keyword search
+#####################################################
 def search_model_by_weight(weights, description):
     conn = database_connect()
     if conn is None:
@@ -1299,8 +889,6 @@ def search_model_by_weight(weights, description):
 
             cur.execute(sql, (str(weight), str(int(weight) + range), description))
             r += cur.fetchall()
-        #if len(r) == 0:
-        #    return None
         cur.close()
         conn.close()
         models = r
@@ -1317,6 +905,9 @@ def search_model_by_weight(weights, description):
     conn.close()
     return None
 
+#####################################################
+#   Edit information about the current user
+#####################################################
 def edit_details(empid, details):
     conn = database_connect()
     if conn is None:
@@ -1356,6 +947,9 @@ def edit_details(empid, details):
     conn.close()
     return None
 
+#####################################################
+#   Search users in the managers department who do not use any models
+#####################################################
 def no_models(manager_id):
     conn = database_connect()
     if conn is None:
